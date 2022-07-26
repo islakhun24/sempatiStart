@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.LoginAct">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:background="#f1c40f"
             android:layout_width="match_parent"
@@ -57,10 +59,12 @@
                 android:layout_height="wrap_content"
                 android:text="Selamat datang"/>
             <TextView
+                android:textColor="@color/colorGray5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Silahkan login untuk masuk aplikasi"/>
             <TextView
+                android:textColor="@color/colorGray5"
                 android:layout_marginTop="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,6 +74,9 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:hint="Username"
+                android:id="@+id/etUsername"
+                android:textColor="@color/colorGray5"
+                android:textColorHint="@color/colorGray5"
                 android:paddingRight="8dp"
                 android:inputType="textPersonName"
                 android:paddingLeft="8dp"
@@ -77,20 +84,53 @@
             <TextView
                 android:layout_marginTop="24dp"
                 android:layout_width="wrap_content"
+                android:textColorHint="@color/colorGray5"
                 android:layout_height="wrap_content"
                 android:text="Password"/>
             <EditText
                 android:hint="Password"
+                android:textColor="@color/colorGray5"
+                android:textColorHint="@color/colorGray5"
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
+                android:id="@+id/etPassword"
                 android:background="@drawable/card_edittext"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="end"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:textColor="@color/colorGray5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lupa Password ?"/>
+                <TextView
+                    android:id="@+id/klikDisini"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOrange"
+                    android:text="Klik Disini"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="8dp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
             <Button
                 android:background="@color/background"
                 android:id="@+id/btnLogin"
+                android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

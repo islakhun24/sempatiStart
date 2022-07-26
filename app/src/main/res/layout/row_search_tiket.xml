@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="PATAS VIP"
             android:textSize="16dp"
-            android:id="@+id/tvClass"
+            android:id="@+id/tvKelas"
             android:textStyle="bold"
             android:textColor="#000"
             android:textAlignment="center"
@@ -27,10 +27,24 @@
             android:layout_alignParentLeft="true"
             android:gravity="center_horizontal" />
         <TextView
+            android:layout_below="@id/tvKelas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MEDAN - B. ACEH PATAS VIP"
+            android:textSize="16dp"
+            android:id="@+id/tvNama"
+            android:textStyle="normal"
+            android:textColor="#000"
+            android:textAlignment="center"
+            android:layout_marginTop="4dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal" />
+        <TextView
             android:id="@+id/tvDari"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvClass"
+            android:layout_below="@id/tvNama"
             android:text="Palembang"
             android:layout_marginTop="8dp"
             android:layout_alignParentLeft="true"/>
@@ -49,7 +63,7 @@
             android:id="@+id/tvKe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvClass"
+            android:layout_below="@id/tvNama"
             android:text="Medan"
             android:layout_marginTop="8dp"
             android:layout_alignParentRight="true"/>
@@ -96,19 +110,33 @@
             android:layout_height="wrap_content"
             android:text="08:00 WIB"
             android:textSize="16dp"
+            android:id="@+id/tvJam"
             android:textColor="#000"
             android:layout_below="@id/tvSisaKursi"
             android:layout_marginTop="8dp"
             android:layout_alignParentLeft="true"/>
-        <TextView
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvSisaKursi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rp. 300,000,-"
-            android:textSize="16dp"
-            android:textColor="#1abc9c"
-            android:layout_below="@id/tvSisaKursi"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentRight="true"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp. 300,000,-"
+                android:id="@+id/tvHarga"
+                android:textSize="16dp"
+                android:textColor="#1abc9c"/>
+            <ImageView
+                android:id="@+id/imgNaik"
+                android:layout_width="wrap_content"
+                android:tint="@color/colorRed"
+                android:src="@drawable/ic_baseline_arrow_upward_24"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="-2dp"

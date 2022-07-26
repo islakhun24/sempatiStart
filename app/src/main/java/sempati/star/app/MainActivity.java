@@ -13,6 +13,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import sempati.star.app.activity.HomeAct;
 import sempati.star.app.activity.LoginAct;
+import sempati.star.app.widget.DialogWidget;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout lv_loading;

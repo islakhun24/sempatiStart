@@ -2,18 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="sempati.star.app">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SempatiStar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.TicketDoneAct"></activity>
+        <activity android:name=".activity.AktivasiAct"></activity>
+        <activity android:name=".activity.TicketDoneAct" />
         <activity android:name=".activity.PembayaranAct" />
         <activity android:name=".activity.LoginAct" />
         <activity android:name=".activity.SeatAct" />

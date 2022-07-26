@@ -1,33 +1,529 @@
 package sempati.star.app.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import sempati.star.app.R;
+import sempati.star.app.activity.HomeAct;
+import sempati.star.app.activity.LoginAct;
 import sempati.star.app.activity.TiketResultAct;
+import sempati.star.app.adapter.AgenAdapter;
+import sempati.star.app.constants.URLs;
+import sempati.star.app.models.Agen;
+import sempati.star.app.models.User;
+import sempati.star.app.services.SharedPrefManager;
+import sempati.star.app.services.VolleySingleton;
 
 public class TiketFrag extends Fragment {
     Button btnCari;
+    SharedPrefManager sharedPrefManager;
+    EditText etKeberankatan, etTujuan, etTanggal, etJumlahKursi;
+    ArrayList<Agen> agenArrayList = new ArrayList<>();
+    ArrayList<Agen> agenKeberankatanArrayList = new ArrayList<>();
+    ArrayList<String> agens = new ArrayList<>();
+    Dialog dialog;
+    int tujuanAgenId, keberangkatanAgenId;
+    String tanggal, tanggalString;
+
+    public String getTanggalString() {
+        return tanggalString;
+    }
+
+    public void setTanggalString(String tanggalString) {
+        this.tanggalString = tanggalString;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public int getTujuanAgenId() {
+        return tujuanAgenId;
+    }
+
+    public void setTujuanAgenId(int tujuanAgenId) {
+        this.tujuanAgenId = tujuanAgenId;
+    }
+
+    public int getKeberangkatanAgenId() {
+        return keberangkatanAgenId;
+    }
+
+    public void setKeberangkatanAgenId(int keberangkatanAgenId) {
+        this.keberangkatanAgenId = keberangkatanAgenId;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tiket, container, false);
+
+
+        sharedPrefManager = new SharedPrefManager(getContext());
+        etKeberankatan = v.findViewById(R.id.etKeberangkatan);
+        etKeberankatan.setInputType(InputType.TYPE_NULL);
+        etTujuan = v.findViewById(R.id.etTujuan);
+        etTujuan.setInputType(InputType.TYPE_NULL);
+        etJumlahKursi = v.findViewById(R.id.etJumlahKursi);
+        etTanggal = v.findViewById(R.id.etTanggal);
+        etTanggal.setInputType(InputType.TYPE_NULL);
+        etTanggal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int yy = calendar.get(Calendar.YEAR);
+                int mm = calendar.get(Calendar.MONTH);
+                int dd = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        SimpleDateFormat simpleDateFormat = null;
+                        Date date = null;
+                        String dayString ="";
+                        Log.d( "onDateSet: ",String.valueOf(dayString));
+                        String datePatams = "";
+                        String dateString = "";
+                        etTanggal.setText(datePatams);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            simpleDateFormat = new SimpleDateFormat("EEEE");
+                        }
+                        date = new Date(year, monthOfYear, dayOfMonth - 1);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            dayString = simpleDateFormat.format(date) + ", ";
+                        }
+                        datePatams = formadDateParams(year,monthOfYear+1, dayOfMonth);
+                        dateString = formateDateString(year,monthOfYear+1, dayOfMonth,dayString);
+                        etTanggal.setText(dateString);
+                        setTanggal(datePatams);
+                        setTanggalString(dateString);
+                    }
+                }, yy, mm, dd);
+                datePicker.show();
+            }
+        });
         btnCari = v.findViewById(R.id.btnCari);
         btnCari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), TiketResultAct.class));
+                int tujuanId = getTujuanAgenId();
+                int keberangkatanId = getKeberangkatanAgenId();
+                String jumlah =  TextUtils.isEmpty(etJumlahKursi.getText().toString()) ? "0" : etJumlahKursi.getText().toString();
+                int jumlahKursi = Integer.parseInt(jumlah);
+                String tanggal = getTanggal();
+
+                if (TextUtils.isEmpty(etTanggal.getText().toString().trim())) {
+                    etTanggal.setError("Tanggal tidak boleh kosong");
+                    return;
+                }
+                if (TextUtils.isEmpty(etTujuan.getText().toString().trim())) {
+                    etTujuan.setError("Tujuan tidak boleh kosong");
+                    return;
+                }
+                if (TextUtils.isEmpty(etJumlahKursi.getText().toString().trim())) {
+                    etJumlahKursi.setError("Jumlah Kursi tidak boleh kosong");
+                    return;
+                }
+                if (TextUtils.isEmpty(etKeberankatan.getText().toString().trim())) {
+                    etKeberankatan.setError("Keberangkatan tidak boleh kosong");
+                    return;
+                }
+
+                Intent i = new Intent(getActivity(), TiketResultAct.class);
+                i.putExtra("tujuanAgenId", tujuanId);
+                i.putExtra("tanggalString", tanggalString);
+                i.putExtra("dari", etKeberankatan.getText().toString().trim());
+                i.putExtra("ke", etTujuan.getText().toString().trim());
+                i.putExtra("tanggal", tanggal);
+                i.putExtra("asalAgenId", keberangkatanId);
+                i.putExtra("jumlahKursi", jumlahKursi);
+                startActivity(i);
+
+//                Log.e(String.valueOf(tujuanId), String.valueOf(keberangkatanId));
+            }
+        });
+
+        etKeberankatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog=new Dialog(getActivity());
+
+                // set custom dialog
+                dialog.setContentView(R.layout.dialog_searchable_spinner);
+
+                // set custom height and width
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,800);
+
+                // set transparent background
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                // show dialog
+                dialog.show();
+                TextView title = dialog.findViewById(R.id.tvTitle);
+                // Initialize and assign variable
+                EditText editText=dialog.findViewById(R.id.edit_text);
+                ListView listView=dialog.findViewById(R.id.list_view);
+                TextView emptyView = dialog.findViewById(R.id.empty);
+                ShimmerFrameLayout container =
+                        (ShimmerFrameLayout) dialog.findViewById(R.id.shimmer_view_container);
+                container.startShimmer();
+                fetchKeberangkatan(listView, emptyView, container);
+                title.setText("Pilih Keberangkatan");
+                editText.setHint("Cari Keberangkatan ...");
+                // Initialize array adapter
+                AgenAdapter adapter=new AgenAdapter(agenArrayList, getActivity());
+
+                // set adapter
+                listView.setAdapter(adapter);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        adapter.getFilter().filter(s);
+
+                        if(adapter.isEmpty()){
+                            listView.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
+                        }else {
+                            listView.setVisibility(View.VISIBLE);
+                            emptyView.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // when item selected from list
+                        // set selected item on textView
+                        Agen agen = (Agen) adapter.getItem(position);
+                        etKeberankatan.setText(agen.getNamaAgen());
+                        setKeberangkatanAgenId(agen.getId());
+
+                        etTujuan.setEnabled(true);
+
+                        // Dismiss dialog
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        etTujuan.setEnabled(false);
+        etTujuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog=new Dialog(getActivity());
+
+                // set custom dialog
+                dialog.setContentView(R.layout.dialog_searchable_spinner);
+
+                // set custom height and width
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,800);
+
+                // set transparent background
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                // show dialog
+                dialog.show();
+                TextView title = dialog.findViewById(R.id.tvTitle);
+                // Initialize and assign variable
+                EditText editText=dialog.findViewById(R.id.edit_text);
+                ListView listView=dialog.findViewById(R.id.list_view);
+                TextView emptyView = dialog.findViewById(R.id.empty);
+                title.setText("Pilih Tujuan");
+                editText.setHint("Cari Tujuan ...");
+                // Initialize array adapter
+                AgenAdapter adapter=new AgenAdapter(agenKeberankatanArrayList, getActivity());
+                ShimmerFrameLayout container =
+                        (ShimmerFrameLayout) dialog.findViewById(R.id.shimmer_view_container);
+                container.startShimmer();
+                fetchTujuan(getKeberangkatanAgenId(), listView, emptyView, container);
+                // set adapter
+                listView.setAdapter(adapter);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        adapter.getFilter().filter(s);
+
+                        if(adapter.isEmpty()){
+                            listView.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
+                        }else {
+                            listView.setVisibility(View.VISIBLE);
+                            emptyView.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // when item selected from list
+                        // set selected item on textView
+                        Agen agen = (Agen) adapter.getItem(position);
+                        etTujuan.setText(agen.getNamaAgen());
+                        setTujuanAgenId(agen.getId());
+                        // Dismiss dialog
+                        dialog.dismiss();
+                    }
+                });
             }
         });
         return v;
+    }
+
+    void fetchKeberangkatan(ListView listView, TextView textView, ShimmerFrameLayout shimmerFrameLayout){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //converting response to json object
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i <jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                Agen agen = new Agen();
+                                agen.setId(object.getInt("id"));
+                                agen.setNamaAgen(object.getString("nama_agen"));
+                                agens.add(object.getString("nama_agen"));
+                                agenArrayList.add(agen);
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            Log.e("TAG", e.toString());
+                            e.printStackTrace();
+
+                        }
+                        if(agenArrayList.size()!=0){
+                            listView.setVisibility(View.VISIBLE);
+                            textView.setVisibility(View.GONE);
+                        }else {
+                            listView.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                        }
+
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        listView.setVisibility(View.GONE);
+                        textView.setVisibility(View.VISIBLE);
+                        Log.e( "onErrorResponse: ", error.toString());
+                        Toast.makeText(getActivity(), "Koneksi gagal", Toast.LENGTH_SHORT).show();
+//                        NetworkResponse response = error.networkResponse;
+//                        try {
+//                            String responseData = new String(response.data, "UTF-8");
+////                            JSONObject object = new JSONObject(responseData);
+////                            dialogWidget.errorDialog(LoginAct.this, "Proses Gagal",  object.getString("message"));
+//                            Log.e("TAG VolleyError", responseData);
+//                        } catch (UnsupportedEncodingException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-access-token" , sharedPrefManager.getUser().getAccessToken().toString());
+                return headers;
+            }
+        };
+
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+
+    }
+
+    void fetchTujuan(int id, ListView listView, TextView textView, ShimmerFrameLayout shimmerFrameLayout){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("onResponse: ", response);
+                        try {
+                            //converting response to json object
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i <jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                Agen agen = new Agen();
+                                agen.setId(object.getInt("id"));
+                                agen.setNamaAgen(object.getString("nama"));
+                                agens.add(object.getString("nama"));
+                                agenKeberankatanArrayList.add(agen);
+
+                            }
+
+                        } catch (JSONException e) {
+                            Log.e("TAG", e.toString());
+                            e.printStackTrace();
+
+                        }
+                        if(agenKeberankatanArrayList.size()!=0){
+                            listView.setVisibility(View.VISIBLE);
+                            textView.setVisibility(View.GONE);
+                        }else {
+                            listView.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                        }
+
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        listView.setVisibility(View.GONE);
+                        textView.setVisibility(View.VISIBLE);
+                        shimmerFrameLayout.setVisibility(View.GONE);
+//                        NetworkResponse response = error.networkResponse;
+//                        try {
+//                            String responseData = new String(response.data, "UTF-8");
+////                            JSONObject object = new JSONObject(responseData);
+////                            dialogWidget.errorDialog(LoginAct.this, "Proses Gagal",  object.getString("message"));
+//                            Log.e("TAG VolleyError", responseData);
+//                        } catch (UnsupportedEncodingException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-access-token" , sharedPrefManager.getUser().getAccessToken().toString());
+                return headers;
+            }
+        };
+
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+
+    }
+
+
+    String formadDateParams (int year, int month, int day){
+        String days = String.valueOf(day);
+        String months = String.valueOf(month);
+        String years = String.valueOf(year);
+        if(day<10){
+            days = '0'+days;
+        }
+        if(month<10){
+            months = '0'+months;
+        }
+        return  years + "-" + months + "-" + days;
+    }
+
+    String formateDateString(int year, int month, int day, String dayName){
+        String months = "", days = String.valueOf(day), years =String.valueOf(year);
+        if(month == 1){
+            months = "Januari";
+        }else if(month == 2){
+            months = "Februari";
+        }else if(month == 3){
+            months = "Maret";
+        }else if(month == 4){
+            months = "April";
+        }else if(month == 5){
+            months = "Mei";
+        }else if(month == 6){
+            months = "Juni";
+        }else if(month == 7){
+            months = "Juli";
+        }else if(month == 8){
+            months = "Agustus";
+        }else if(month == 9){
+            months = "September";
+        }else if(month == 10){
+            months = "Oktober";
+        }else if(month == 11){
+            months = "November";
+        }else if(month == 12){
+            months = "Desember";
+        }
+        if(day<10){
+            days = '0'+days;
+        }
+        return dayName+ day +" "+ months + " " + years;
     }
 }
