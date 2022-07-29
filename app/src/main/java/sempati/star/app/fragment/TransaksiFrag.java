@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sempati.star.app.R;
+import sempati.star.app.databinding.FragmentTransaksiBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +58,16 @@ public class TransaksiFrag extends Fragment {
         }
     }
 
+    FragmentTransaksiBinding v;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transaksi, container, false);
+        v = FragmentTransaksiBinding.inflate(inflater, container, false);
+
+        v.shimmerViewContainer.setVisibility(View.VISIBLE);
+
+        return v.getRoot();
     }
 }
