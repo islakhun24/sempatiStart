@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +72,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
     ProgressBar progressBar;
     String deviceId ;
     Button btnBatal;
+    ShimmerFrameLayout container;
     @Override
     public void onBackPressed() {
         new MaterialDialog.Builder(this)
@@ -108,6 +110,9 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
         perubahanHarga = getIntent().getIntExtra("perubahanHarga", 0);
         jadwalHarga = getIntent().getIntExtra("jadwalHarga", 0);
         hargaAwal = getIntent().getIntExtra("hargaAwal", 0);
+
+        container = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+
         deviceId = android.provider.Settings.Secure.getString(
                 getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         progressBar = findViewById(R.id.progersBar);
@@ -183,6 +188,8 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
     }
 
     void fetchDataKursi(){
+        container.startShimmer();
+        container.setVisibility(View.VISIBLE);
         seatArrayList.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.SELECT_VIEW_KURSI_TIKET+"/"+keberankatanId+"/"+androidSharedPref.getAndroidID(),
                 new Response.Listener<String>() {
@@ -294,6 +301,8 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                             namaKelas.setText(kursi.getDetail().getRefLambung().getNama());
                             seatAdapter = new SeatAdapter(seatArrayList, SeatAct.this, String.valueOf(keberankatanId), SeatAct.this);
                             rvSeat.setAdapter(seatAdapter);
+                            container.setVisibility(View.GONE);
+                            rvSeat.setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -303,7 +312,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        container.setVisibility(View.GONE);
                     }
                 })
 
@@ -330,7 +339,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                 .setPositiveButton("Booking", new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
-                        progressBar.setVisibility(View.VISIBLE);
+
                         dialogInterface.dismiss();
                         postBooking(noKursi, namaKursi);
                     }
@@ -347,6 +356,8 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
     }
 
     void postBooking(String noKursi, String nama_kursi){
+        rvSeat.setVisibility(View.GONE);
+        container.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.BOOKING_SEAT,
                 new Response.Listener<String>() {
                     @Override
@@ -379,7 +390,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        progressBar.setVisibility(View.GONE);
+                        container.setVisibility(View.GONE);
                         fetchDataKursi();
                     }
                 },
@@ -387,7 +398,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("TAG ERR", error.toString());
-                        progressBar.setVisibility(View.GONE);
+                        container.setVisibility(View.GONE);
 
                     }
                 })

@@ -2,6 +2,9 @@ package sempati.star.app.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -27,6 +30,8 @@ import com.bumptech.glide.Glide;
 import dev.shreyaspatil.MaterialDialog.MaterialDialog;
 import dev.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import sempati.star.app.R;
+import sempati.star.app.adapter.KeberangkatanAdapter;
+import sempati.star.app.adapter.TiketAdapter;
 import sempati.star.app.constants.URLs;
 import sempati.star.app.models.Asal;
 import sempati.star.app.models.Keberangkatan;
@@ -40,6 +45,7 @@ import sempati.star.app.services.VolleySingleton;
 import sempati.star.app.utils.QRCodeUtil;
 
 import com.anggastudio.printama.Printama;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -51,28 +57,43 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TicketDoneAct extends AppCompatActivity {
-    ImageView imageView;
-    LinearLayout printView;
     Button print;
     String data;
     SharedPrefManager sharedPrefManager;
     QRCodeUtil qrCodeUtil;
 
+    private static RecyclerView.Adapter adapter;
+    ShimmerFrameLayout container;
+    ImageView back;
+    RecyclerView rvResult;
+    private RecyclerView.LayoutManager layoutManager;
     ArrayList<PembayranDetail> arrayList =  new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_done);
-        imageView = findViewById(R.id.qr);
-        printView = findViewById(R.id.printView);
         print = findViewById(R.id.btnPrint);
         qrCodeUtil = new QRCodeUtil();
         sharedPrefManager = new SharedPrefManager(this);
-
+        rvResult = (RecyclerView) findViewById(R.id.rvResult);
+        rvResult.setHasFixedSize(true);
+        container = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+        container.startShimmer();
+        layoutManager = new LinearLayoutManager(this);
+        rvResult.setLayoutManager(layoutManager);
+        rvResult.setItemAnimator(new DefaultItemAnimator());
+        back = findViewById(R.id.back);
         Intent intent = getIntent();
         data = intent.getStringExtra("data");
-        Glide.with(this).load("https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=22000065").into(imageView);
+        Log.d( "onCreate: asdasd ", data);
         getSavedPrinter();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TicketDoneAct.this, HomeAct.class));
+            }
+        });
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +178,7 @@ public class TicketDoneAct extends AppCompatActivity {
     }
 
     void parseData(String data){
+        container.setVisibility(View.VISIBLE);
         try {
             JSONArray array = new JSONArray(data);
             for (int i = 0; i<array.length(); i++){
@@ -237,6 +259,12 @@ public class TicketDoneAct extends AppCompatActivity {
 
                 arrayList.add(pembayranDetail);
             }
+            adapter = new TiketAdapter(arrayList, TicketDoneAct.this);
+            rvResult.setAdapter(adapter);
+
+            container.setVisibility(View.GONE);
+
+            rvResult.setVisibility(View.VISIBLE);
         } catch (JSONException e) {
             e.printStackTrace();
         }

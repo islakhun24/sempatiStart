@@ -50,7 +50,7 @@ import sempati.star.app.services.VolleySingleton;
 
 public class PembayaranAct extends AppCompatActivity {
     SharedPrefManager sharedPrefManager;
-    Button btnBayar;
+    Button btnBayar, btnBooking;
     int status;
     String android_id;
     int keberankatanId;
@@ -71,6 +71,7 @@ public class PembayaranAct extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
         status = sharedPrefManager.getUser().getStatusUser();
         btnBayar = findViewById(R.id.btnBayar);
+        btnBooking = findViewById(R.id.btnBooking);
         rvResult = (RecyclerView) findViewById(R.id.rvResult);
         rvResult.setHasFixedSize(true);
         empty = findViewById(R.id.empty);
@@ -92,6 +93,13 @@ public class PembayaranAct extends AppCompatActivity {
             public void onClick(View v) {
 //                startActivity(new Intent(PembayaranAct.this, TicketDoneAct.class));
                 postDataPenumpang();
+            }
+        });
+        btnBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                startActivity(new Intent(PembayaranAct.this, TicketDoneAct.class));
+                bookingDataPenumpang();
             }
         });
         fechData();
@@ -357,5 +365,110 @@ public class PembayaranAct extends AppCompatActivity {
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+    void bookingDataPenumpang(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.BOOKING_DATA_PENUMPANG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("TAG SS", response);
 
+                        try {
+                            Gson gson = new Gson();
+
+                            String json = gson.toJson(arrayList);
+                            JSONObject object = new JSONObject(response);
+                            if (object.getBoolean("success")==true){
+                                Intent i = new Intent(PembayaranAct.this, HomeAct.class);
+//                                i.putExtra("data", json);
+                                startActivity(i);
+                            }else {
+                                new MaterialDialog.Builder(PembayaranAct.this)
+                                        .setAnimation(R.raw.dissapointed)
+                                        .setTitle("Booking Gagal?") // You can also send title like R.string.from_resources
+                                        .setMessage("Maaf, proses booking anda gagal?")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Ok", new MaterialDialog.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int which) {
+                                                dialogInterface.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", new MaterialDialog.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int which) {
+                                                dialogInterface.dismiss();
+                                            }
+                                        })
+                                        .build().show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            new MaterialDialog.Builder(PembayaranAct.this)
+                                    .setAnimation(R.raw.dissapointed)
+                                    .setTitle("Booking Gagal?") // You can also send title like R.string.from_resources
+                                    .setMessage("Maaf, proses booking anda gagal?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok", new MaterialDialog.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int which) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new MaterialDialog.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int which) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .build().show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("TAG ERR", error.toString());
+                        new MaterialDialog.Builder(PembayaranAct.this)
+                                .setAnimation(R.raw.dissapointed)
+                                .setTitle("Booking Gagal?") // You can also send title like R.string.from_resources
+                                .setMessage("Maaf, proses booking anda gagal?")
+                                .setCancelable(false)
+                                .setPositiveButton("Ok", new MaterialDialog.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int which) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new MaterialDialog.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int which) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .build().show();
+
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("x-access-token" , sharedPrefManager.getUser().getAccessToken().toString());
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                Gson gson = new Gson();
+                String json = gson.toJson(arrayList);
+                params.put("penumpangArray", json);
+                params.put("android_id", String.valueOf(android_id));
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
 }
