@@ -2,7 +2,7 @@ package sempati.star.app.constants;
 
 public class URLs {
 //    private static final String ROOT_URL = "http://192.168.61.246:8080";
-    private static final String ROOT_URL = "https://sempati-api.herokuapp.comx";
+    private static final String ROOT_URL = "https://sempati-api.herokuapp.com";
 
     private static final String API = ROOT_URL+ "/api";
     private static final String AUTH = API +"/auth";
@@ -76,4 +76,9 @@ public class URLs {
     public static final String DELETE_TEMP_ORDER_TIKET = TIKET+ "/delete_temp_order";
     public static final String SELECT_FORMAT_BY_ID_TIKET = TIKET+ "/select_format_by_id";
     public static final String SHOW_MY_BOOKING_SEAT = TIKET+ "/show_my_booking_seat";
+
+
+    //fame
+    //transaksi
+    public static final String LIST_TRANSAKSI       = TIKET+ "/get_transaksi";
 }

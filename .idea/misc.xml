@@ -3,8 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_login.xml" value="0.22826086956521738" />
         <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_tiket_result.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_booking.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_tiket.xml" value="0.22826086956521738" />
         <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_transaksi.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/row_search_tiket.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/transaksi_raw.xml" value="0.22826086956521738" />
       </map>
     </option>
   </component>
