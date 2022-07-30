@@ -81,4 +81,5 @@ public class URLs {
     //fame
     //transaksi
     public static final String LIST_TRANSAKSI       = TIKET+ "/get_transaksi";
+    public static final String LIST_BOOKING         = TIKET+ "/get_booking";
 }

@@ -11,6 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="56dp"
         android:id="@+id/fl_container"
         android:background="@color/white"
         android:layout_width="match_parent"
