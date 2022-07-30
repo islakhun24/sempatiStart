@@ -156,6 +156,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                Intent i = new Intent( SeatAct.this, PembayaranAct.class);
                i.putExtra("keberangkatanId", keberankatanId);
                i.putExtra("android_id", deviceId);
+               i.putExtra("from", "not fame");
                startActivity(i);
             }
         });

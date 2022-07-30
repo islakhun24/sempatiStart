@@ -1,6 +1,8 @@
 package sempati.star.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -12,6 +14,8 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import sempati.star.app.activity.PembayaranAct;
+import sempati.star.app.activity.TicketDoneAct;
 import sempati.star.app.databinding.TransaksiRawBinding;
 import sempati.star.app.models.TransaksiModel;
 
@@ -72,7 +76,15 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
             v.tvSisaKursi.setText("Jumlah "+transaksiModel.getKelas_armada_jumlah_seat()+ " kursi");
 
             v.btnDetail.setOnClickListener(x -> {
-                Toast.makeText(context, "test klik", Toast.LENGTH_SHORT).show();
+                String deviceId = android.provider.Settings.Secure.getString(
+                        context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+                Log.e("TAG", "setDataKeView: "+deviceId );
+//                Toast.makeText(context, ""+deviceId, Toast.LENGTH_SHORT).show();
+//                context.startActivity(new Intent(context, PembayaranAct.class)
+//                        .putExtra("keberangkatanId", transaksiModel.getKeberangkatan_id())
+//                        .putExtra("android_id", deviceId)
+//                        .putExtra("from", "fame")
+//                );
             });
         }
     }
