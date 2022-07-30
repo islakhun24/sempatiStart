@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -148,14 +149,51 @@ public class TransaksiFrag extends Fragment {
                                 TransaksiModel transaksiModel = new TransaksiModel();
                                 transaksiModel.setId(object.getString("id"));
                                 transaksiModel.setHarga_tiket(object.getString("harga_tiket"));
+                                transaksiModel.setNo_kursi(object.getString("no_kursi"));
+                                transaksiModel.setPenumpang_hp(object.getString("penumpang_hp"));
+                                transaksiModel.setPenumpang_umum(object.getString("penumpang_umum"));
+                                transaksiModel.setHarga_potongan(object.getString("harga_potongan"));
+                                transaksiModel.setAgen_id(object.getString("agen_id"));
+                                transaksiModel.setPenumpang_id(object.getString("penumpang_id"));
+                                transaksiModel.setKomisi_agen_id(object.getString("komisi_agen_id"));
+                                transaksiModel.setPenumpang_umum(object.getString("penumpang_umum"));
+                                transaksiModel.setTiba_id(object.getString("tiba_id"));
+                                transaksiModel.setStatus(object.getString("status"));
+                                transaksiModel.setStatus_migrasi(object.getString("status_migrasi"));
+                                transaksiModel.setQrcode(object.getString("qrcode"));
+                                transaksiModel.setKet(object.getString("ket"));
+                                transaksiModel.setLimit_boking(object.getString("limit_boking"));
+                                transaksiModel.setCr_id(object.getString("cr_id"));
+                                transaksiModel.setCr_id_pusat(object.getString("cr_id_pusat"));
+                                transaksiModel.setCr_datetime(object.getString("cr_datetime"));
+                                transaksiModel.setUp_id(object.getString("up_id"));
+                                transaksiModel.setUp_datetime(object.getString("up_datetime"));
+                                //asal
                                 transaksiModel.setAsal_nama_agen(objectAsal.getString("nama_agen"));
-                                transaksiModel.setTujuan_nama_agen(objectTujuan.getString("nama_agen"));
                                 transaksiModel.setAsal_kode_agen(objectAsal.getString("kode_agen"));
+                                transaksiModel.setAsal_id(objectAsal.getString("id"));
+                                //tujuan
+                                transaksiModel.setTujuan_nama_agen(objectTujuan.getString("nama_agen"));
                                 transaksiModel.setTujuan_kode_agen(objectTujuan.getString("kode_agen"));
+                                transaksiModel.setTujuan_id(objectTujuan.getString("id"));
+                                //trayek
                                 transaksiModel.setTrayek_nama(objecttrayek.getString("nama_trayek"));
+                                transaksiModel.setTrayek_id(objecttrayek.getString("id"));
+                                transaksiModel.setTrayek_nama_laporan(objecttrayek.getString("nama_laporan"));
+                                //keberangkatan
                                 transaksiModel.setKeberangkatan_jam(objectkeberangkatan.getString("jam"));
+                                transaksiModel.setKeberangkatan_id(objectkeberangkatan.getString("id"));
+                                transaksiModel.setKeberangkatan_tanggal(objectkeberangkatan.getString("tanggal"));
+                                transaksiModel.setKeberangkatan_waktu(objectkeberangkatan.getString("waktu"));
+                                //kelas armada
                                 transaksiModel.setKelas_armada_nama(objectKelasArmada.getString("nama_kelas"));
                                 transaksiModel.setKelas_armada_jumlah_seat(objectKelasArmada.getString("jumlah_seat"));
+                                transaksiModel.setKelas_armada_jenis_seat(objectKelasArmada.getString("jenis_seat"));
+                                transaksiModel.setKelas_armada_id(objectKelasArmada.getString("id"));
+                                //lambung
+                                transaksiModel.setLambung_id(objectLambung.getString("id"));
+                                transaksiModel.setLambung_nama(objectLambung.getString("nama"));
+
 
                                 listTransaksi.add(transaksiModel);
                             } catch (JSONException e) {

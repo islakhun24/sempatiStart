@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import sempati.star.app.R;
+import sempati.star.app.adapter.BookingAdapter;
 import sempati.star.app.adapter.TransaksiAdapter;
 import sempati.star.app.constants.URLs;
 import sempati.star.app.databinding.FragmentBookingBinding;
@@ -116,7 +117,7 @@ public class BookingFrag extends Fragment {
     private void getBooking(){
         v.shimmerViewContainer.setVisibility(View.VISIBLE);
 
-        adapter = new TransaksiAdapter(getContext(), listBooking);
+        adapter = new BookingAdapter(getContext(), listBooking);
         llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         did = new DividerItemDecoration(v.rvResult.getContext(), llm.getOrientation());
         v.rvResult.setHasFixedSize(true);

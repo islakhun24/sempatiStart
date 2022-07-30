@@ -274,6 +274,7 @@ public class PembayaranAct extends AppCompatActivity {
                             if (object.getBoolean("success")==true){
                                 Intent i = new Intent(PembayaranAct.this, TicketDoneAct.class);
                                 i.putExtra("data", json);
+                                i.putExtra("from", "not fame");
                                 startActivity(i);
                             }else {
                                 new MaterialDialog.Builder(PembayaranAct.this)

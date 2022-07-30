@@ -1,6 +1,7 @@
 package sempati.star.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import sempati.star.app.activity.TicketDoneAct;
 import sempati.star.app.databinding.TransaksiRawBinding;
+import sempati.star.app.fragment.TransaksiFrag;
 import sempati.star.app.models.TransaksiModel;
 
 public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.ViewHolder> {
@@ -73,7 +78,13 @@ public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.View
             v.tvSisaKursi.setText("Jumlah "+transaksiModel.getKelas_armada_jumlah_seat()+ " kursi");
 
             v.btnDetail.setOnClickListener(x -> {
-                Toast.makeText(context, "test klik", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "test klik", Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
+                String json = gson.toJson(transaksiModel);
+                context.startActivity(new Intent(context, TicketDoneAct.class)
+                        .putExtra("data", json)
+                        .putExtra("from", "fame")
+                );
             });
         }
     }
