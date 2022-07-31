@@ -80,11 +80,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                         context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
                 Log.e("TAG", "setDataKeView: "+deviceId );
 //                Toast.makeText(context, ""+deviceId, Toast.LENGTH_SHORT).show();
-//                context.startActivity(new Intent(context, PembayaranAct.class)
-//                        .putExtra("keberangkatanId", transaksiModel.getKeberangkatan_id())
-//                        .putExtra("android_id", deviceId)
-//                        .putExtra("from", "fame")
-//                );
+                context.startActivity(new Intent(context, PembayaranAct.class)
+                        .putExtra("id", transaksiModel.getId())
+                        .putExtra("from", "fame")
+                );
             });
         }
     }

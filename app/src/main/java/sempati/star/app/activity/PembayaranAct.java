@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -107,6 +108,9 @@ public class PembayaranAct extends AppCompatActivity {
     }
 
     void fechData(){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Mengambil Data ...");
+        progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.BUY_TICKET_DETAIL,
                 new Response.Listener<String>() {
                     @Override
@@ -116,6 +120,7 @@ public class PembayaranAct extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean status = jsonObject.getBoolean("success");
                             if(status){
+                                progressDialog.dismiss();
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 JSONObject jsonDetail = jsonObject.getJSONObject("detail");
 
@@ -213,9 +218,11 @@ public class PembayaranAct extends AppCompatActivity {
                             if(arrayList.size()!=0){
                                 rvResult.setVisibility(View.VISIBLE);
                                 empty.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                             }else {
                                 rvResult.setVisibility(View.GONE);
                                 empty.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
                             }
                             container.setVisibility(View.GONE);
                         } catch (JSONException e) {
@@ -223,6 +230,7 @@ public class PembayaranAct extends AppCompatActivity {
                             rvResult.setVisibility(View.GONE);
                             empty.setVisibility(View.VISIBLE);
                             container.setVisibility(View.GONE);
+                            progressDialog.dismiss();
                         }
 
 
@@ -235,6 +243,7 @@ public class PembayaranAct extends AppCompatActivity {
                         rvResult.setVisibility(View.GONE);
                         empty.setVisibility(View.VISIBLE);
                         container.setVisibility(View.GONE);
+                        progressDialog.dismiss();
 
                     }
                 })
@@ -249,8 +258,14 @@ public class PembayaranAct extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("keberangkatan_id", String.valueOf(keberankatanId));
-                params.put("android_id", String.valueOf(android_id));
+                if(getIntent().getStringExtra("from").equalsIgnoreCase("fame")){
+
+                    params.put("id", getIntent().getStringExtra("id"));
+                }else {
+                    params.put("keberangkatan_id", String.valueOf(keberankatanId));
+                    params.put("android_id", String.valueOf(android_id));
+                }
+
                 return params;
             }
         };
@@ -366,6 +381,7 @@ public class PembayaranAct extends AppCompatActivity {
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
     void bookingDataPenumpang(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.BOOKING_DATA_PENUMPANG,
                 new Response.Listener<String>() {
