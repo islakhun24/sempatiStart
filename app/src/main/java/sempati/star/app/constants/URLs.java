@@ -76,4 +76,10 @@ public class URLs {
     public static final String DELETE_TEMP_ORDER_TIKET = TIKET+ "/delete_temp_order";
     public static final String SELECT_FORMAT_BY_ID_TIKET = TIKET+ "/select_format_by_id";
     public static final String SHOW_MY_BOOKING_SEAT = TIKET+ "/show_my_booking_seat";
+
+
+    //fame
+    //transaksi
+    public static final String LIST_TRANSAKSI       = TIKET+ "/get_transaksi";
+    public static final String LIST_BOOKING         = TIKET+ "/get_booking";
 }

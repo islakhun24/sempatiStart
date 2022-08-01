@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -50,6 +52,7 @@ import sempati.star.app.services.VolleySingleton;
 
 public class PembayaranAct extends AppCompatActivity {
     SharedPrefManager sharedPrefManager;
+    Gson gson;
     Button btnBayar, btnBooking;
     int status;
     String android_id;
@@ -66,6 +69,7 @@ public class PembayaranAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pembayaran);
+        gson = new Gson();
         keberankatanId = getIntent().getIntExtra("keberangkatanId", 0);
         android_id = getIntent().getStringExtra("android_id");
         sharedPrefManager = new SharedPrefManager(this);
@@ -107,6 +111,9 @@ public class PembayaranAct extends AppCompatActivity {
     }
 
     void fechData(){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Mengambil Data ...");
+        progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.BUY_TICKET_DETAIL,
                 new Response.Listener<String>() {
                     @Override
@@ -116,6 +123,7 @@ public class PembayaranAct extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean status = jsonObject.getBoolean("success");
                             if(status){
+                                progressDialog.dismiss();
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 JSONObject jsonDetail = jsonObject.getJSONObject("detail");
 
@@ -213,9 +221,11 @@ public class PembayaranAct extends AppCompatActivity {
                             if(arrayList.size()!=0){
                                 rvResult.setVisibility(View.VISIBLE);
                                 empty.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                             }else {
                                 rvResult.setVisibility(View.GONE);
                                 empty.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
                             }
                             container.setVisibility(View.GONE);
                         } catch (JSONException e) {
@@ -223,6 +233,7 @@ public class PembayaranAct extends AppCompatActivity {
                             rvResult.setVisibility(View.GONE);
                             empty.setVisibility(View.VISIBLE);
                             container.setVisibility(View.GONE);
+                            progressDialog.dismiss();
                         }
 
 
@@ -235,6 +246,7 @@ public class PembayaranAct extends AppCompatActivity {
                         rvResult.setVisibility(View.GONE);
                         empty.setVisibility(View.VISIBLE);
                         container.setVisibility(View.GONE);
+                        progressDialog.dismiss();
 
                     }
                 })
@@ -249,8 +261,14 @@ public class PembayaranAct extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("keberangkatan_id", String.valueOf(keberankatanId));
-                params.put("android_id", String.valueOf(android_id));
+                if(getIntent().getStringExtra("from").equalsIgnoreCase("fame")){
+
+                    params.put("id", getIntent().getStringExtra("id"));
+                }else {
+                    params.put("keberangkatan_id", String.valueOf(keberankatanId));
+                    params.put("android_id", String.valueOf(android_id));
+                }
+
                 return params;
             }
         };
@@ -260,6 +278,16 @@ public class PembayaranAct extends AppCompatActivity {
     }
 
     void postDataPenumpang(){
+        for (int i=0;i<arrayList.size();i++){
+            if(arrayList.get(i).getPenumpang_umum().equalsIgnoreCase("-")){
+                Toast.makeText(PembayaranAct.this,"Nama penumpang harus diisi!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(arrayList.get(i).getPenumpang_hp().equalsIgnoreCase("0")){
+                Toast.makeText(PembayaranAct.this,"Nomor HP penumpang harus diisi!", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.POST_DATA_PENUMPANG,
                 new Response.Listener<String>() {
                     @Override
@@ -268,12 +296,12 @@ public class PembayaranAct extends AppCompatActivity {
 
                         try {
                             Gson gson = new Gson();
-
                             String json = gson.toJson(arrayList);
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("success")==true){
                                 Intent i = new Intent(PembayaranAct.this, TicketDoneAct.class);
                                 i.putExtra("data", json);
+                                i.putExtra("from", "not fame");
                                 startActivity(i);
                             }else {
                                 new MaterialDialog.Builder(PembayaranAct.this)
@@ -355,7 +383,6 @@ public class PembayaranAct extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                Gson gson = new Gson();
                 String json = gson.toJson(arrayList);
                 params.put("penumpangArray", json);
                 params.put("android_id", String.valueOf(android_id));
@@ -365,6 +392,7 @@ public class PembayaranAct extends AppCompatActivity {
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
     void bookingDataPenumpang(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.BOOKING_DATA_PENUMPANG,
                 new Response.Listener<String>() {

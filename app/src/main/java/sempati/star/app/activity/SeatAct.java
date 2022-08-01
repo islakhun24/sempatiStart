@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -155,6 +156,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                Intent i = new Intent( SeatAct.this, PembayaranAct.class);
                i.putExtra("keberangkatanId", keberankatanId);
                i.putExtra("android_id", deviceId);
+               i.putExtra("from", "not fame");
                startActivity(i);
             }
         });
@@ -325,6 +327,10 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
             }
 
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }

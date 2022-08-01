@@ -144,7 +144,12 @@ public class TicketDoneAct extends AppCompatActivity {
             }
         });
 
-        parseData(data);
+        if(getIntent().getStringExtra("from").equalsIgnoreCase("fame")){
+            parseDataFame(data);
+        }else {
+            parseData(data);
+        }
+
 
         Log.d("onCreate TAG, : ", arrayList.toString());
     }
@@ -269,5 +274,90 @@ public class TicketDoneAct extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    void parseDataFame(String data){
+        container.setVisibility(View.VISIBLE);
+        Log.e("TAG", "parseDataFame: "+data );
+        try {
+            JSONObject jsonData = new JSONObject(data);
+            Keberangkatan keberangkatan = new Keberangkatan();
+            keberangkatan.setId(Integer.parseInt(jsonData.getString("keberangkatan_id")));
+            keberangkatan.setTanggal(jsonData.getString("keberangkatan_tanggal"));
+            keberangkatan.setJam(jsonData.getString("keberangkatan_jam"));
+            keberangkatan.setWaktu(jsonData.getString("keberangkatan_waktu"));
+
+            Lambung lambung = new Lambung();
+            lambung.setId(Integer.parseInt(jsonData.getString("lambung_id")));
+            lambung.setNama(jsonData.getString("lambung_nama"));
+
+            Kelas_armada kelas_armada = new Kelas_armada();
+            kelas_armada.setId(Integer.parseInt(jsonData.getString("kelas_armada_id")));
+            kelas_armada.setNama_kelas(jsonData.getString("kelas_armada_nama"));
+            kelas_armada.setJenis_seat(jsonData.getInt("kelas_armada_jenis_seat"));
+            kelas_armada.setJenis_seat(0);
+
+            lambung.setKelas_armada(kelas_armada);
+
+            TbTrayek trayek = new TbTrayek();
+            trayek.setId(Integer.parseInt(jsonData.getString("trayek_id")));
+            trayek.setNama_trayek(jsonData.getString("trayek_nama"));
+            trayek.setNama_laporan(jsonData.getString("trayek_nama_laporan"));
+
+            keberangkatan.setTrayek(trayek);
+            keberangkatan.setLambung(lambung);
+
+            Asal asal = new Asal();
+            asal.setId(Integer.parseInt(jsonData.getString("asal_id")));
+            asal.setNama_agen(jsonData.getString("asal_nama_agen"));
+            asal.setKode_agen(jsonData.getString("asal_kode_agen"));
+
+            Tujuan tujuan = new Tujuan();
+            tujuan.setId(Integer.parseInt(jsonData.getString("tujuan_id")));
+            tujuan.setNama_agen(jsonData.getString("tujuan_nama_agen"));
+            tujuan.setKode_agen(jsonData.getString("tujuan_kode_agen"));
+
+            PembayranDetail pembayranDetail = new PembayranDetail();
+            pembayranDetail.setId(Integer.parseInt(jsonData.getString("id")));
+            pembayranDetail.setNo_kursi(jsonData.getString("no_kursi"));
+            pembayranDetail.setPenumpang_hp(jsonData.getString("penumpang_hp"));
+            pembayranDetail.setPenumpang_umum(jsonData.getString("penumpang_umum"));
+            pembayranDetail.setHarga_potongan(jsonData.getString("harga_potongan"));
+            pembayranDetail.setKeberangkatan_id(jsonData.getString("keberangkatan_id"));
+            pembayranDetail.setAgen_id(jsonData.getString("agen_id"));
+            pembayranDetail.setPenumpang_id(jsonData.getString("penumpang_id"));
+            pembayranDetail.setKomisi_agen_id(jsonData.getString("komisi_agen_id"));
+            pembayranDetail.setPenumpang_umum(jsonData.getString("penumpang_umum"));
+            pembayranDetail.setTiba_id(jsonData.getString("tiba_id"));
+            pembayranDetail.setHarga_tiket(jsonData.getString("harga_tiket"));
+            pembayranDetail.setHarga_potongan(jsonData.getString("harga_potongan"));
+//                pembayranDetail.setLambung_id(jsonData.getString("lambung_id"));
+            pembayranDetail.setNo_kursi(jsonData.getString("no_kursi"));
+            pembayranDetail.setStatus(jsonData.getString("status"));
+            pembayranDetail.setStatus_migrasi(jsonData.getString("status_migrasi"));
+            pembayranDetail.setQrcode(jsonData.getString("qrcode"));
+            pembayranDetail.setKet(jsonData.getString("ket"));
+            pembayranDetail.setLimit_boking(jsonData.getString("limit_boking"));
+//                pembayranDetail.setTickes(jsonData.getString("tickes"));
+            pembayranDetail.setCr_id(jsonData.getString("cr_id"));
+            pembayranDetail.setCr_id_pusat(jsonData.getString("cr_id_pusat"));
+            pembayranDetail.setCr_datetime(jsonData.getString("cr_datetime"));
+            pembayranDetail.setUp_id(jsonData.getString("up_id"));
+            pembayranDetail.setUp_datetime(jsonData.getString("up_datetime"));
+
+            pembayranDetail.setAsal(asal);
+            pembayranDetail.setKeberangkatan(keberangkatan);
+            pembayranDetail.setTujuan(tujuan);
+
+            arrayList.add(pembayranDetail);
+            adapter = new TiketAdapter(arrayList, TicketDoneAct.this);
+            rvResult.setAdapter(adapter);
+
+            container.setVisibility(View.GONE);
+
+            rvResult.setVisibility(View.VISIBLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
