@@ -66,7 +66,7 @@ public class AgenAdapter  extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Agen agen = agenListFiltered.get(position);
+        Agen agen = agenList.get(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -101,35 +101,26 @@ public class AgenAdapter  extends BaseAdapter implements Filterable {
         Filter filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-
-                FilterResults filterResults = new FilterResults();
+                List<Agen> filteredList = new ArrayList<>();
                 if (constraint == null || constraint.length() == 0) {
-                    filterResults.count = agenList.size();
-                    filterResults.values = agenList;
-
+                    filteredList.addAll(agenListFiltered);
                 } else {
-                    List<Agen> resultsModel = new ArrayList<>();
-                    String searchStr = constraint.toString().toLowerCase();
-                    for (Agen itemsModel : agenList) {
-                        if (itemsModel.getNamaAgen().toLowerCase().contains(searchStr)) {
-                            resultsModel.add(itemsModel);
-
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+                    for (Agen item : agenListFiltered) {
+                        if (item.getNamaAgen().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
                         }
-                        filterResults.count = resultsModel.size();
-                        filterResults.values = resultsModel;
                     }
-
-
                 }
-                Log.e( "performFiltering: ", filterResults.values.toString());
-                return filterResults;
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+                return results;
             }
-
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                agenListFiltered = (ArrayList<Agen>) results.values;
+                agenList.clear();
+                agenList.addAll((List) results.values);
                 notifyDataSetChanged();
-
             }
         };
         return filter;
