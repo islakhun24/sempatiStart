@@ -47,20 +47,20 @@ public class AgenAdapter  extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        if (agenListFiltered == null){
+        if (agenList == null){
             return 0;
         }
-        return agenListFiltered.size() ;
+        return agenList.size() ;
     }
 
     @Override
     public Object getItem(int position) {
-        return agenListFiltered.get(position);
+        return agenList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return agenListFiltered.get(position).getId();
+        return agenList.get(position).getId();
     }
 
     @Override
@@ -110,7 +110,6 @@ public class AgenAdapter  extends BaseAdapter implements Filterable {
                 } else {
                     List<Agen> resultsModel = new ArrayList<>();
                     String searchStr = constraint.toString().toLowerCase();
-
                     for (Agen itemsModel : agenList) {
                         if (itemsModel.getNamaAgen().toLowerCase().contains(searchStr)) {
                             resultsModel.add(itemsModel);
@@ -128,7 +127,6 @@ public class AgenAdapter  extends BaseAdapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
                 agenListFiltered = (ArrayList<Agen>) results.values;
                 notifyDataSetChanged();
 
