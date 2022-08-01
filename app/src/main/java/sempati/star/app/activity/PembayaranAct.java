@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -51,6 +52,7 @@ import sempati.star.app.services.VolleySingleton;
 
 public class PembayaranAct extends AppCompatActivity {
     SharedPrefManager sharedPrefManager;
+    Gson gson;
     Button btnBayar, btnBooking;
     int status;
     String android_id;
@@ -67,6 +69,7 @@ public class PembayaranAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pembayaran);
+        gson = new Gson();
         keberankatanId = getIntent().getIntExtra("keberangkatanId", 0);
         android_id = getIntent().getStringExtra("android_id");
         sharedPrefManager = new SharedPrefManager(this);
@@ -275,6 +278,16 @@ public class PembayaranAct extends AppCompatActivity {
     }
 
     void postDataPenumpang(){
+        for (int i=0;i<arrayList.size();i++){
+            if(arrayList.get(i).getPenumpang_umum().equalsIgnoreCase("-")){
+                Toast.makeText(PembayaranAct.this,"Nama penumpang harus diisi!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(arrayList.get(i).getPenumpang_hp().equalsIgnoreCase("0")){
+                Toast.makeText(PembayaranAct.this,"Nomor HP penumpang harus diisi!", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.POST_DATA_PENUMPANG,
                 new Response.Listener<String>() {
                     @Override
@@ -283,7 +296,6 @@ public class PembayaranAct extends AppCompatActivity {
 
                         try {
                             Gson gson = new Gson();
-
                             String json = gson.toJson(arrayList);
                             JSONObject object = new JSONObject(response);
                             if (object.getBoolean("success")==true){
@@ -371,7 +383,6 @@ public class PembayaranAct extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                Gson gson = new Gson();
                 String json = gson.toJson(arrayList);
                 params.put("penumpangArray", json);
                 params.put("android_id", String.valueOf(android_id));

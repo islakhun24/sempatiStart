@@ -44,7 +44,8 @@
             android:background="@color/white"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="-40dp">
+            android:layout_marginTop="-40dp"
+            android:layout_marginBottom="16dp">
             <RelativeLayout
                 android:padding="16dp"
                 android:background="#fff"
@@ -68,23 +69,24 @@
                     android:layout_toRightOf="@id/imgMyLocation"
                     android:text="Keberangkatan"
                     android:textSize="12sp"/>
+
                 <EditText
                     android:id="@+id/etKeberangkatan"
-                    android:clickable="true"
-                    android:editable="false"
-                    android:inputType="none"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGray5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvKeberangkatan"
+                    android:layout_toRightOf="@id/imgMyLocation"
                     android:background="#fff"
-                    android:textColorHint="@color/colorGray5"
+                    android:focusable="false"
                     android:hint="Lokasi keberangkan"
-                    android:layout_toRightOf="@id/imgMyLocation"/>
+                    android:inputType="none"
+                    android:textColor="@color/colorGray5"
+                    android:textColorHint="@color/colorGray5"
+                    android:textSize="14sp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
         <ImageView
+            android:visibility="gone"
             android:layout_gravity="right"
             android:elevation="8dp"
             android:layout_marginRight="24dp"
@@ -102,8 +104,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="-12dp">
+            android:layout_marginLeft="16dp">
             <RelativeLayout
                 android:padding="16dp"
                 android:background="#fff"
@@ -127,17 +128,19 @@
                     android:layout_toRightOf="@id/imgMyLocationKe"
                     android:text="Tujuan"
                     android:textSize="12sp"/>
+
                 <EditText
-                    android:textColor="@color/colorGray5"
-                    android:textColorHint="@color/colorGray5"
+                    android:id="@+id/etTujuan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvTujuan"
-                    android:textSize="14sp"
-                    android:id="@+id/etTujuan"
+                    android:layout_toRightOf="@id/imgMyLocationKe"
                     android:background="#fff"
+                    android:focusable="false"
                     android:hint="Lokasi keberangkan"
-                    android:layout_toRightOf="@id/imgMyLocationKe"/>
+                    android:textColor="@color/colorGray5"
+                    android:textColorHint="@color/colorGray5"
+                    android:textSize="14sp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
         <LinearLayout
@@ -179,17 +182,19 @@
                         android:layout_toRightOf="@id/imgTanggal"
                         android:text="Tanggal"
                         android:textSize="12sp"/>
+
                     <EditText
                         android:id="@+id/etTanggal"
-                        android:textSize="14sp"
-                        android:textColorHint="@color/colorGray5"
-                        android:textColor="@color/colorGray5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvTanggal"
+                        android:layout_toRightOf="@id/imgTanggal"
                         android:background="#fff"
                         android:hint="Pilih"
-                        android:layout_toRightOf="@id/imgTanggal"/>
+                        android:focusable="false"
+                        android:textColor="@color/colorGray5"
+                        android:textColorHint="@color/colorGray5"
+                        android:textSize="14sp" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView

@@ -121,6 +121,7 @@ public class TiketFrag extends Fragment {
         etJumlahKursi = v.findViewById(R.id.etJumlahKursi);
         etTanggal = v.findViewById(R.id.etTanggal);
         etTanggal.setInputType(InputType.TYPE_NULL);
+        etTujuan.setEnabled(false);
         etTanggal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,7 +273,6 @@ public class TiketFrag extends Fragment {
                 });
             }
         });
-        etTujuan.setEnabled(false);
         etTujuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -347,6 +347,7 @@ public class TiketFrag extends Fragment {
     }
 
     void fetchKeberangkatan(ListView listView, TextView textView, ShimmerFrameLayout shimmerFrameLayout){
+        agenArrayList.clear();
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET,
                 new Response.Listener<String>() {
@@ -415,6 +416,7 @@ public class TiketFrag extends Fragment {
     }
 
     void fetchTujuan(int id, ListView listView, TextView textView, ShimmerFrameLayout shimmerFrameLayout){
+        agenKeberankatanArrayList.clear();
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id,
                 new Response.Listener<String>() {
