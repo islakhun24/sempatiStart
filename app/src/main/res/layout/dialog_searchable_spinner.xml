@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- Linear layout as parent layout-->
-<LinearLayout
-    android:layout_margin="16dp"
+<LinearLayout android:layout_margin="16dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@android:color/white"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Text view to show the text Select course-->
     <TextView
@@ -21,19 +20,51 @@
         android:textStyle="bold"
         />
 
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@android:drawable/editbox_background"
+        app:iconifiedByDefault="false"
+        app:queryHint="Cari disini" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
+
     <!-- Edit text to allow user to type name
            of item he/she wants to search-->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_text"
-        android:hint="Search..."
-        android:padding="12dp"
-        android:singleLine="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:drawable/editbox_background"
-        />
+<!--    <LinearLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/edit_text"-->
+<!--            android:hint="Search..."-->
+<!--            android:padding="12dp"-->
+<!--            android:singleLine="true"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:background="@android:drawable/editbox_background"-->
+<!--            />-->
+<!--        <ImageView-->
+<!--            android:id="@+id/ivCari"-->
+<!--            android:src="@drawable/ic_baseline_search_24"-->
+<!--            android:layout_marginTop="-50dp"-->
+<!--            android:layout_marginRight="8dp"-->
+<!--            android:layout_gravity="center_vertical|end"-->
+<!--            android:padding="8dp"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"/>-->
+<!--    </LinearLayout>-->
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:visibility="gone"
         android:id="@+id/shimmer_view_container"
