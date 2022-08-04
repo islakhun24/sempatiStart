@@ -467,6 +467,7 @@ public class TiketFrag extends Fragment {
             }
         }));
 
+        lokasiKeberangkatanList.clear();
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -669,6 +670,7 @@ public class TiketFrag extends Fragment {
             }
         }));
 
+        tujuanKeberangkatanList.clear();
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
