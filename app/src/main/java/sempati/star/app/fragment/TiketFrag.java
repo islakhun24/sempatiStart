@@ -447,6 +447,7 @@ public class TiketFrag extends Fragment {
         recyclerView.setAdapter(adapter);
 
         TextView dialogTitle = dialog.findViewById(R.id.tvTitle);
+        TextView emptyView = dialog.findViewById(R.id.empty);
         dialogTitle.setText("Pilih Lokasi Keberangkatan");
         ShimmerFrameLayout shimmerFrameLayout = dialog.findViewById(R.id.shimmer_view_container);
         dialog.show();
@@ -475,14 +476,22 @@ public class TiketFrag extends Fragment {
                 try {
                     //converting response to json object
                     JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length(); i++){
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        Agen agen = new Agen();
-                        agen.setId(object.getInt("id"));
-                        agen.setNamaAgen(object.getString("nama_agen"));
-                        lokasiKeberangkatanList.add(agen);
+                    if(jsonArray.length() > 0) {
+                        emptyView.setVisibility(View.GONE);
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        for (int i = 0; i <jsonArray.length(); i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Agen agen = new Agen();
+                            agen.setId(object.getInt("id"));
+                            agen.setNamaAgen(object.getString("nama_agen"));
+                            lokasiKeberangkatanList.add(agen);
+                        }
+                    }else {
+                        emptyView.setVisibility(View.VISIBLE);
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
                     }
-
 
                 } catch (JSONException e) {
                     Log.e("TAG", e.toString());
@@ -503,20 +512,15 @@ public class TiketFrag extends Fragment {
                 shimmerFrameLayout.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.GONE);
                 dialog.hide();
-//                b.alertDialogInformasi("VolleyError : " + error);
                 if (error instanceof TimeoutError) {
-//                    b.alertDialogPerhatian("Server sedang sibuk, siahkan coba kembali 😊");
                     Toast.makeText(getContext(), "Server sedang sibuk, siahkan coba kembali 😊", Toast.LENGTH_SHORT).show();
                 }else if(error instanceof NoConnectionError){
-//                    b.alertDialogPerhatian("koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊");
                     Toast.makeText(getContext(), "koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊", Toast.LENGTH_SHORT).show();
                 } else if (error instanceof AuthFailureError
                         || error instanceof ServerError
                         || error instanceof NetworkError){
-//                    b.alertDialogPerhatian("Koneksi Error. silakan coba lagi 😊");
                     Toast.makeText(getContext(), "Koneksi Error. silakan coba lagi 😊", Toast.LENGTH_SHORT).show();
                 } else {
-//                    b.alertDialogPerhatian("VolleyError : " + error.toString());
                     Toast.makeText(getContext(), "VolleyError : " + error.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -535,10 +539,15 @@ public class TiketFrag extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonObjectRequest);
 
-        SearchView searchView = dialog.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        EditText editText=dialog.findViewById(R.id.edit_text);
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 lokasiKeberangkatanList.clear();
                 recyclerView = dialog.findViewById(R.id.recyclerView);
                 adapter = new ListFameAdapter(getContext(), lokasiKeberangkatanList);
@@ -551,21 +560,33 @@ public class TiketFrag extends Fragment {
                 final ProgressDialog progressDialog = new ProgressDialog(getContext());
                 progressDialog.setMessage("Mengambil Data ...");
                 progressDialog.show();
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET+"?q="+query, new Response.Listener<String>() {
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.GONE);
+//                shimmerFrameLayout.setVisibility(View.VISIBLE);
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET+"?q="+s, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.e("response get nik : ", response);
                         try {
                             //converting response to json object
                             JSONArray jsonArray = new JSONArray(response);
-                            for (int i = 0; i <jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                Agen agen = new Agen();
-                                agen.setId(object.getInt("id"));
-                                agen.setNamaAgen(object.getString("nama_agen"));
-                                lokasiKeberangkatanList.add(agen);
+                            if(jsonArray.length() > 0) {
+                                shimmerFrameLayout.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                emptyView.setVisibility(View.GONE);
+                                progressDialog.dismiss();
+                                for (int i = 0; i <jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    Agen agen = new Agen();
+                                    agen.setId(object.getInt("id"));
+                                    agen.setNamaAgen(object.getString("nama_agen"));
+                                    lokasiKeberangkatanList.add(agen);
+                                }
+                            }else {
+                                emptyView.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                             }
-
 
                         } catch (JSONException e) {
                             Log.e("TAG", e.toString());
@@ -582,24 +603,19 @@ public class TiketFrag extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("VolleyError", error.toString());
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         dialog.hide();
-//                b.alertDialogInformasi("VolleyError : " + error);
                         if (error instanceof TimeoutError) {
-//                    b.alertDialogPerhatian("Server sedang sibuk, siahkan coba kembali 😊");
                             Toast.makeText(getContext(), "Server sedang sibuk, siahkan coba kembali 😊", Toast.LENGTH_SHORT).show();
                         }else if(error instanceof NoConnectionError){
-//                    b.alertDialogPerhatian("koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊");
                             Toast.makeText(getContext(), "koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof AuthFailureError
                                 || error instanceof ServerError
                                 || error instanceof NetworkError){
-//                    b.alertDialogPerhatian("Koneksi Error. silakan coba lagi 😊");
                             Toast.makeText(getContext(), "Koneksi Error. silakan coba lagi 😊", Toast.LENGTH_SHORT).show();
                         } else {
-//                    b.alertDialogPerhatian("VolleyError : " + error.toString());
                             Toast.makeText(getContext(), "VolleyError : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -617,17 +633,102 @@ public class TiketFrag extends Fragment {
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(jsonObjectRequest);
-                return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText.equals("")){
-                    this.onQueryTextSubmit("");
-                }
-                return true;
+            public void afterTextChanged(Editable s) {
+
             }
         });
+
+//        SearchView searchView = dialog.findViewById(R.id.searchView);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                lokasiKeberangkatanList.clear();
+//                recyclerView = dialog.findViewById(R.id.recyclerView);
+//                adapter = new ListFameAdapter(getContext(), lokasiKeberangkatanList);
+//                llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+//                did = new DividerItemDecoration(recyclerView.getContext(), llm.getOrientation());
+//                recyclerView.setHasFixedSize(true);
+//                recyclerView.setLayoutManager(llm);
+//                recyclerView.addItemDecoration(did);
+//                recyclerView.setAdapter(adapter);
+//                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+//                progressDialog.setMessage("Mengambil Data ...");
+//                progressDialog.show();
+//                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET+"?q="+query, new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.e("response get nik : ", response);
+//                        try {
+//                            //converting response to json object
+//                            JSONArray jsonArray = new JSONArray(response);
+//                            for (int i = 0; i <jsonArray.length(); i++){
+//                                JSONObject object = jsonArray.getJSONObject(i);
+//                                Agen agen = new Agen();
+//                                agen.setId(object.getInt("id"));
+//                                agen.setNamaAgen(object.getString("nama_agen"));
+//                                lokasiKeberangkatanList.add(agen);
+//                            }
+//
+//
+//                        } catch (JSONException e) {
+//                            Log.e("TAG", e.toString());
+//                            e.printStackTrace();
+//
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        progressDialog.dismiss();
+//                        recyclerView.setVisibility(View.VISIBLE);
+//                        shimmerFrameLayout.setVisibility(View.GONE);
+//                    }
+//
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("VolleyError", error.toString());
+//                        progressDialog.dismiss();
+//                        shimmerFrameLayout.setVisibility(View.GONE);
+//                        recyclerView.setVisibility(View.GONE);
+//                        dialog.hide();
+//                        if (error instanceof TimeoutError) {
+//                            Toast.makeText(getContext(), "Server sedang sibuk, siahkan coba kembali 😊", Toast.LENGTH_SHORT).show();
+//                        }else if(error instanceof NoConnectionError){
+//                            Toast.makeText(getContext(), "koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊", Toast.LENGTH_SHORT).show();
+//                        } else if (error instanceof AuthFailureError
+//                                || error instanceof ServerError
+//                                || error instanceof NetworkError){
+//                            Toast.makeText(getContext(), "Koneksi Error. silakan coba lagi 😊", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(getContext(), "VolleyError : " + error.toString(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }) {
+//                    @Override
+//                    public Map<String, String> getHeaders() throws AuthFailureError {
+//                        Map<String, String> headers = new HashMap<>();
+//                        headers.put("x-access-token" , sharedPrefManager.getUser().getAccessToken().toString());
+//                        return headers;
+//                    }
+//                };
+//                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                        60000,
+//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//                requestQueue.add(jsonObjectRequest);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if(newText.equals("")){
+//                    this.onQueryTextSubmit("");
+//                }
+//                return true;
+//            }
+//        });
     }
 
     private void showDialogTujuan(int id) {
@@ -651,13 +752,11 @@ public class TiketFrag extends Fragment {
         recyclerView.setAdapter(adapter);
 
         TextView dialogTitle = dialog.findViewById(R.id.tvTitle);
+        TextView emptyView = dialog.findViewById(R.id.empty);
         dialogTitle.setText("Pilih Lokasi Tujuan");
         ShimmerFrameLayout shimmerFrameLayout = dialog.findViewById(R.id.shimmer_view_container);
         dialog.show();
 
-//        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-//        progressDialog.setMessage("Mengambil Data ...");
-//        progressDialog.show();
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -678,13 +777,21 @@ public class TiketFrag extends Fragment {
                 try {
                     //converting response to json object
                     JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i <jsonArray.length(); i++){
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        Agen agen = new Agen();
-                        agen.setId(object.getInt("id"));
-                        agen.setNamaAgen(object.getString("nama"));
-                        tujuanKeberangkatanList.add(agen);
-
+                    if(jsonArray.length() > 0){
+                        emptyView.setVisibility(View.GONE);
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        for (int i = 0; i <jsonArray.length(); i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Agen agen = new Agen();
+                            agen.setId(object.getInt("id"));
+                            agen.setNamaAgen(object.getString("nama"));
+                            tujuanKeberangkatanList.add(agen);
+                        }
+                    }else {
+                        emptyView.setVisibility(View.VISIBLE);
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -706,20 +813,15 @@ public class TiketFrag extends Fragment {
                 shimmerFrameLayout.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.GONE);
                 dialog.hide();
-//                b.alertDialogInformasi("VolleyError : " + error);
                 if (error instanceof TimeoutError) {
-//                    b.alertDialogPerhatian("Server sedang sibuk, siahkan coba kembali 😊");
                     Toast.makeText(getContext(), "Server sedang sibuk, siahkan coba kembali 😊", Toast.LENGTH_SHORT).show();
                 }else if(error instanceof NoConnectionError){
-//                    b.alertDialogPerhatian("koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊");
                     Toast.makeText(getContext(), "koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊", Toast.LENGTH_SHORT).show();
                 } else if (error instanceof AuthFailureError
                         || error instanceof ServerError
                         || error instanceof NetworkError){
-//                    b.alertDialogPerhatian("Koneksi Error. silakan coba lagi 😊");
                     Toast.makeText(getContext(), "Koneksi Error. silakan coba lagi 😊", Toast.LENGTH_SHORT).show();
                 } else {
-//                    b.alertDialogPerhatian("VolleyError : " + error.toString());
                     Toast.makeText(getContext(), "VolleyError : " + error.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -738,10 +840,15 @@ public class TiketFrag extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonObjectRequest);
 
-        SearchView searchView = dialog.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        EditText editText=dialog.findViewById(R.id.edit_text);
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tujuanKeberangkatanList.clear();
                 recyclerView = dialog.findViewById(R.id.recyclerView);
                 adapter = new ListFameAdapter(getContext(), tujuanKeberangkatanList);
@@ -754,20 +861,33 @@ public class TiketFrag extends Fragment {
                 final ProgressDialog progressDialog = new ProgressDialog(getContext());
                 progressDialog.setMessage("Mengambil Data ...");
                 progressDialog.show();
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id+"?q="+query, new Response.Listener<String>() {
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.GONE);
+//                shimmerFrameLayout.setVisibility(View.VISIBLE);
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id+"?q="+s, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.e("response get nik : ", response);
                         try {
                             //converting response to json object
                             JSONArray jsonArray = new JSONArray(response);
-                            for (int i = 0; i <jsonArray.length(); i++){
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                Agen agen = new Agen();
-                                agen.setId(object.getInt("id"));
-                                agen.setNamaAgen(object.getString("nama"));
-                                tujuanKeberangkatanList.add(agen);
-
+                            if(jsonArray.length() > 0){
+                                emptyView.setVisibility(View.GONE);
+//                                shimmerFrameLayout.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
+                                for (int i = 0; i <jsonArray.length(); i++){
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    Agen agen = new Agen();
+                                    agen.setId(object.getInt("id"));
+                                    agen.setNamaAgen(object.getString("nama"));
+                                    tujuanKeberangkatanList.add(agen);
+                                }
+                            }else {
+                                emptyView.setVisibility(View.VISIBLE);
+                                shimmerFrameLayout.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                             }
 
                         } catch (JSONException e) {
@@ -785,24 +905,19 @@ public class TiketFrag extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("VolleyError", error.toString());
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         dialog.hide();
-//                b.alertDialogInformasi("VolleyError : " + error);
                         if (error instanceof TimeoutError) {
-//                    b.alertDialogPerhatian("Server sedang sibuk, siahkan coba kembali 😊");
                             Toast.makeText(getContext(), "Server sedang sibuk, siahkan coba kembali 😊", Toast.LENGTH_SHORT).show();
                         }else if(error instanceof NoConnectionError){
-//                    b.alertDialogPerhatian("koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊");
                             Toast.makeText(getContext(), "koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof AuthFailureError
                                 || error instanceof ServerError
                                 || error instanceof NetworkError){
-//                    b.alertDialogPerhatian("Koneksi Error. silakan coba lagi 😊");
                             Toast.makeText(getContext(), "Koneksi Error. silakan coba lagi 😊", Toast.LENGTH_SHORT).show();
                         } else {
-//                    b.alertDialogPerhatian("VolleyError : " + error.toString());
                             Toast.makeText(getContext(), "VolleyError : " + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -820,16 +935,100 @@ public class TiketFrag extends Fragment {
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(jsonObjectRequest);
-                return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText.equals("")){
-                    this.onQueryTextSubmit("");
-                }
-                return true;
+            public void afterTextChanged(Editable s) {
+
             }
         });
+//        SearchView searchView = dialog.findViewById(R.id.searchView);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                tujuanKeberangkatanList.clear();
+//                recyclerView = dialog.findViewById(R.id.recyclerView);
+//                adapter = new ListFameAdapter(getContext(), tujuanKeberangkatanList);
+//                llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+//                did = new DividerItemDecoration(recyclerView.getContext(), llm.getOrientation());
+//                recyclerView.setHasFixedSize(true);
+//                recyclerView.setLayoutManager(llm);
+//                recyclerView.addItemDecoration(did);
+//                recyclerView.setAdapter(adapter);
+//                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+//                progressDialog.setMessage("Mengambil Data ...");
+//                progressDialog.show();
+//                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id+"?q="+query, new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.e("response get nik : ", response);
+//                        try {
+//                            //converting response to json object
+//                            JSONArray jsonArray = new JSONArray(response);
+//                            for (int i = 0; i <jsonArray.length(); i++){
+//                                JSONObject object = jsonArray.getJSONObject(i);
+//                                Agen agen = new Agen();
+//                                agen.setId(object.getInt("id"));
+//                                agen.setNamaAgen(object.getString("nama"));
+//                                tujuanKeberangkatanList.add(agen);
+//
+//                            }
+//
+//                        } catch (JSONException e) {
+//                            Log.e("TAG", e.toString());
+//                            e.printStackTrace();
+//
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        progressDialog.dismiss();
+//                        recyclerView.setVisibility(View.VISIBLE);
+//                        shimmerFrameLayout.setVisibility(View.GONE);
+//                    }
+//
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("VolleyError", error.toString());
+//                        progressDialog.dismiss();
+//                        shimmerFrameLayout.setVisibility(View.GONE);
+//                        recyclerView.setVisibility(View.GONE);
+//                        dialog.hide();
+//                        if (error instanceof TimeoutError) {
+//                            Toast.makeText(getContext(), "Server sedang sibuk, siahkan coba kembali 😊", Toast.LENGTH_SHORT).show();
+//                        }else if(error instanceof NoConnectionError){
+//                            Toast.makeText(getContext(), "koneksi tidak tersedia, pastikan koneksi internet tersedia dan coba kembali 😊", Toast.LENGTH_SHORT).show();
+//                        } else if (error instanceof AuthFailureError
+//                                || error instanceof ServerError
+//                                || error instanceof NetworkError){
+//                            Toast.makeText(getContext(), "Koneksi Error. silakan coba lagi 😊", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(getContext(), "VolleyError : " + error.toString(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }) {
+//                    @Override
+//                    public Map<String, String> getHeaders() throws AuthFailureError {
+//                        Map<String, String> headers = new HashMap<>();
+//                        headers.put("x-access-token" , sharedPrefManager.getUser().getAccessToken().toString());
+//                        return headers;
+//                    }
+//                };
+//                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                        60000,
+//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//                requestQueue.add(jsonObjectRequest);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if(newText.equals("")){
+//                    this.onQueryTextSubmit("");
+//                }
+//                return true;
+//            }
+//        });
     }
 }

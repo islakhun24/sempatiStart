@@ -20,13 +20,41 @@
         android:textStyle="bold"
         />
 
-    <SearchView
-        android:id="@+id/searchView"
+<!--    <SearchView-->
+<!--        android:id="@+id/searchView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:background="@android:drawable/editbox_background"-->
+<!--        app:iconifiedByDefault="false"-->
+<!--        app:queryHint="Cari disini" />-->
+
+    <!-- Edit text to allow user to type name
+           of item he/she wants to search-->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:background="@android:drawable/editbox_background"
-        app:iconifiedByDefault="false"
-        app:queryHint="Cari disini" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_text"
+            android:hint="Search..."
+            android:padding="12dp"
+            android:singleLine="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/editbox_background"
+            />
+        <ImageView
+            android:id="@+id/ivCari"
+            android:src="@drawable/ic_baseline_search_24"
+            android:layout_marginTop="-50dp"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical|end"
+            android:padding="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -36,34 +64,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
     </androidx.recyclerview.widget.RecyclerView>
-
-    <!-- Edit text to allow user to type name
-           of item he/she wants to search-->
-<!--    <LinearLayout-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-<!--        <EditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/edit_text"-->
-<!--            android:hint="Search..."-->
-<!--            android:padding="12dp"-->
-<!--            android:singleLine="true"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginBottom="8dp"-->
-<!--            android:background="@android:drawable/editbox_background"-->
-<!--            />-->
-<!--        <ImageView-->
-<!--            android:id="@+id/ivCari"-->
-<!--            android:src="@drawable/ic_baseline_search_24"-->
-<!--            android:layout_marginTop="-50dp"-->
-<!--            android:layout_marginRight="8dp"-->
-<!--            android:layout_gravity="center_vertical|end"-->
-<!--            android:padding="8dp"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"/>-->
-<!--    </LinearLayout>-->
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:visibility="gone"
@@ -95,12 +95,12 @@
        </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
     <!-- List view to insert list of items-->
-    <ListView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list_view"
-        />
+<!--    <ListView-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/list_view"-->
+<!--        />-->
     <TextView
         android:visibility="gone"
         android:id="@+id/empty"
