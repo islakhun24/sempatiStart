@@ -82,4 +82,5 @@ public class URLs {
     //transaksi
     public static final String LIST_TRANSAKSI       = TIKET+ "/get_transaksi";
     public static final String LIST_BOOKING         = TIKET+ "/get_booking";
+    public static final String DETAIL_AKUN          = AUTH+ "/user";
 }

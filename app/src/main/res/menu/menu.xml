@@ -22,7 +22,7 @@
 
     <item
         android:id="@+id/laporan"
-        android:icon="@drawable/ic_baseline_menu_book_24"
-        android:title="Laporan" />
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Akun" />
 
 </menu>

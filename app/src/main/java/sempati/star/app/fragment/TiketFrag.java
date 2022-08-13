@@ -134,6 +134,15 @@ public class TiketFrag extends Fragment {
 
     ArrayList<Agen> lokasiKeberangkatanList = new ArrayList<>();
     ArrayList<Agen> tujuanKeberangkatanList = new ArrayList<>();
+    String query_tujuan;
+
+    public String getQuery_tujuan() {
+        return query_tujuan;
+    }
+
+    public void setQuery_tujuan(String query_tujuan) {
+        this.query_tujuan = query_tujuan;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -432,10 +441,13 @@ public class TiketFrag extends Fragment {
         dialog.setContentView(R.layout.dialog_searchable_spinner);
         dialog.setCancelable(true);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
+//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         recyclerView = dialog.findViewById(R.id.recyclerView);
         adapter = new ListFameAdapter(getContext(), lokasiKeberangkatanList);
@@ -468,11 +480,11 @@ public class TiketFrag extends Fragment {
             }
         }));
 
-        lokasiKeberangkatanList.clear();
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_BY_ID_TIKET, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("response get nik : ", response);
+                lokasiKeberangkatanList.clear();
                 try {
                     //converting response to json object
                     JSONArray jsonArray = new JSONArray(response);
@@ -548,7 +560,6 @@ public class TiketFrag extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                lokasiKeberangkatanList.clear();
                 recyclerView = dialog.findViewById(R.id.recyclerView);
                 adapter = new ListFameAdapter(getContext(), lokasiKeberangkatanList);
                 llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -567,6 +578,7 @@ public class TiketFrag extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         Log.e("response get nik : ", response);
+                        lokasiKeberangkatanList.clear();
                         try {
                             //converting response to json object
                             JSONArray jsonArray = new JSONArray(response);
@@ -737,10 +749,13 @@ public class TiketFrag extends Fragment {
         dialog.setContentView(R.layout.dialog_searchable_spinner);
         dialog.setCancelable(true);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
+//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         recyclerView = dialog.findViewById(R.id.recyclerView);
         adapter = new ListFameAdapter(getContext(), tujuanKeberangkatanList);
@@ -769,11 +784,11 @@ public class TiketFrag extends Fragment {
             }
         }));
 
-        tujuanKeberangkatanList.clear();
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("response get nik : ", response);
+                tujuanKeberangkatanList.clear();
                 try {
                     //converting response to json object
                     JSONArray jsonArray = new JSONArray(response);
@@ -849,7 +864,11 @@ public class TiketFrag extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tujuanKeberangkatanList.clear();
+                setQuery_tujuan(s.toString().trim());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 recyclerView = dialog.findViewById(R.id.recyclerView);
                 adapter = new ListFameAdapter(getContext(), tujuanKeberangkatanList);
                 llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -864,10 +883,11 @@ public class TiketFrag extends Fragment {
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.GONE);
 //                shimmerFrameLayout.setVisibility(View.VISIBLE);
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id+"?q="+s, new Response.Listener<String>() {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.SELECT_AGEN_TUJUAN_NOT_ID_TIKET+"/"+id+"?q="+getQuery_tujuan(), new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.e("response get nik : ", response);
+                        tujuanKeberangkatanList.clear();
                         try {
                             //converting response to json object
                             JSONArray jsonArray = new JSONArray(response);
@@ -935,11 +955,6 @@ public class TiketFrag extends Fragment {
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(jsonObjectRequest);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
 //        SearchView searchView = dialog.findViewById(R.id.searchView);

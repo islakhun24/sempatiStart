@@ -44,7 +44,7 @@ public class VolleySingleton {
 
     public <T> void addToRequestQueue(Request<T> req) {
         req.setRetryPolicy(new DefaultRetryPolicy(
-                12000,
+                60000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         getRequestQueue().add(req);

@@ -1,14 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".fragment.ReportFrag">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:background="#f1c40f"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="56dp">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:text="AKUN"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:elevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:padding="@dimen/dp_12"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvNamaAgen"
+                android:text="Nama Agen : Loading . . ."
+                android:textSize="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvAlamat"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="Alamat : Loading . . ."
+                android:textSize="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvNoTelp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="No Telp : Loading . . ."
+                android:textSize="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_height="1dp"
+                android:background="#e0e0e0"/>
+
+            <TextView
+                android:text="Informasi"
+                android:textSize="@dimen/dp_16"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/dp_16"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvInformasi"
+                android:text="@string/informasi"
+                android:textSize="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_height="1dp"
+                android:background="#e0e0e0"/>
+
+            <TextView
+                android:id="@+id/tvVersiApk"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="Versi Apk : Loading . . ."
+                android:textSize="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginTop="@dimen/dp_16"
+                android:textSize="@dimen/dp_16"
+                android:text="Web Manajemen Agen :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvWebManajemen"
+                android:layout_marginTop="@dimen/dp_8"
+                android:gravity="center"
+                android:text="Loading . . ."
+                android:textSize="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnTestPrinter"
+                    android:layout_margin="@dimen/dp_8"
+                    android:text="TEST PRINTER"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_weight="1"
+                    android:text="LOGOUT"
+                    android:layout_margin="@dimen/dp_8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -2,4 +2,5 @@
     <string name="app_name">SempatiStar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="informasi">Kode unik dapat digunakan hanya sekali pada saat verifikasi akun agen.\nJika ingin mengganti HP baru, maka di perangkat HP yang lama wajib LOGOUT terlebih dahulu, agar HP yang baru dapat digunakan unutk mengakses aplikasi Agen-Sindoro.\n\nJika terjadi kondisi tertentu seperti kehilangan HP dan lupa password,\nBapak/Ibu sekalian dapat menghubungi kantor Sindoro untuk mengajukan reset.\nSelanjutnya akun anda akan diaktifkan kembali dengan arahan atau panduan dari kantor Sindoro.</string>
 </resources>

@@ -1,5 +1,6 @@
 package sempati.star.app.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -63,6 +64,7 @@ public class SharedPrefManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        ctx.startActivity(new Intent(ctx, LoginAct.class));
+        ctx.startActivity(new Intent(ctx, LoginAct.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+        ((Activity) ctx).finish();
     }
 }
