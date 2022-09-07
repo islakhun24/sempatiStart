@@ -15,19 +15,17 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-import sempati.star.app.activity.LaporanTransaksiDetailActivity;
 import sempati.star.app.activity.TicketDoneAct;
 import sempati.star.app.databinding.TransaksiRawBinding;
-import sempati.star.app.fragment.LaporanTransaksiFragment;
 import sempati.star.app.models.TransaksiModel;
 
-public class TransaksiLaporanAdapter extends RecyclerView.Adapter<TransaksiLaporanAdapter.ViewHolder> {
+public class TransaksiLaporanDetailAdapter extends RecyclerView.Adapter<TransaksiLaporanDetailAdapter.ViewHolder> {
 
     private Context context;
     private List<TransaksiModel> list;
     private TransaksiRawBinding v;
 
-    public TransaksiLaporanAdapter(Context context, List<TransaksiModel> list){
+    public TransaksiLaporanDetailAdapter(Context context, List<TransaksiModel> list){
         this.context = context;
         this.list = list;
     }
@@ -81,14 +79,11 @@ public class TransaksiLaporanAdapter extends RecyclerView.Adapter<TransaksiLapor
 
             v.btnDetail.setOnClickListener(x -> {
 //                Toast.makeText(context, "test klik", Toast.LENGTH_SHORT).show();
-//                Gson gson = new Gson();
-//                String json = gson.toJson(transaksiModel);
-//                context.startActivity(new Intent(context, TicketDoneAct.class)
-//                        .putExtra("data", json)
-//                        .putExtra("from", "fame")
-//                );
-                context.startActivity(new Intent(context, LaporanTransaksiDetailActivity.class)
-                        .putExtra("id_keberangkatan", transaksiModel.getKeberangkatan_id())
+                Gson gson = new Gson();
+                String json = gson.toJson(transaksiModel);
+                context.startActivity(new Intent(context, TicketDoneAct.class)
+                        .putExtra("data", json)
+                        .putExtra("from", "fame")
                 );
             });
         }
