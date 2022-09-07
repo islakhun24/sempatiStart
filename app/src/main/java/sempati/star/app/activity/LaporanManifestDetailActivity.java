@@ -1,21 +1,14 @@
-package sempati.star.app.fragment;
+package sempati.star.app.activity;
 
-import android.app.DatePickerDialog;
-import android.icu.text.SimpleDateFormat;
-import android.os.Build;
-import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.DatePicker;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -34,70 +27,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import sempati.star.app.R;
-import sempati.star.app.adapter.TransaksiLaporanAdapter;
-import sempati.star.app.adapter.TransaksiManifestAdapter;
+import sempati.star.app.adapter.TransaksiLaporanDetailAdapter;
+import sempati.star.app.adapter.TransaksiManifestDetailAdapter;
 import sempati.star.app.constants.URLs;
-import sempati.star.app.databinding.FragmentLaporanManifestBinding;
-import sempati.star.app.databinding.FragmentLaporanTransaksiBinding;
+import sempati.star.app.databinding.ActivityLaporanManifestDetailBinding;
+import sempati.star.app.databinding.ActivityLaporanTransaksiDetailBinding;
 import sempati.star.app.models.TransaksiModel;
 import sempati.star.app.services.SharedPrefManager;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LaporanManifestFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class LaporanManifestFragment extends Fragment {
+public class LaporanManifestDetailActivity extends AppCompatActivity {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public LaporanManifestFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LaporanManifestFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LaporanManifestFragment newInstance(String param1, String param2) {
-        LaporanManifestFragment fragment = new LaporanManifestFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    FragmentLaporanManifestBinding v;
+    ActivityLaporanManifestDetailBinding v;
 
     List<TransaksiModel> listTransaksi;
 
@@ -107,80 +55,31 @@ public class LaporanManifestFragment extends Fragment {
 
     SharedPrefManager sharedPrefManager;
 
-    String tanggalAwal, tanggalAwalString;
-    String tanggalAkhir, tanggalAkhirString;
-
-    public String getTanggalAwal() {
-        return tanggalAwal;
-    }
-
-    public void setTanggalAwal(String tanggalAwal) {
-        this.tanggalAwal = tanggalAwal;
-    }
-
-    public String getTanggalAwalString() {
-        return tanggalAwalString;
-    }
-
-    public void setTanggalAwalString(String tanggalAwalString) {
-        this.tanggalAwalString = tanggalAwalString;
-    }
-
-    public String getTanggalAkhir() {
-        return tanggalAkhir;
-    }
-
-    public void setTanggalAkhir(String tanggalAkhir) {
-        this.tanggalAkhir = tanggalAkhir;
-    }
-
-    public String getTanggalAkhirString() {
-        return tanggalAkhirString;
-    }
-
-    public void setTanggalAkhirString(String tanggalAkhirString) {
-        this.tanggalAkhirString = tanggalAkhirString;
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = FragmentLaporanManifestBinding.inflate(inflater, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        v = ActivityLaporanManifestDetailBinding.inflate(getLayoutInflater());
+        setContentView(v.getRoot());
 
         listTransaksi = new ArrayList<>();
-        sharedPrefManager = new SharedPrefManager(getContext());
+        sharedPrefManager = new SharedPrefManager(this);
 
-        v.lnTanggalAwal.setOnClickListener(x -> getDate("awal"));
-        v.lnTanggalAkhir.setOnClickListener(x -> getDate("akhir"));
-        v.btnCari.setOnClickListener(x -> getTransaksi("tidak ada"));
-
-        getTransaksi("ada");
-
-        return v.getRoot();
+        getTransaksi();
     }
 
-    private void getTransaksi(String tanggal){
+    private void getTransaksi(){
         listTransaksi.clear();
 //        Log.e(TAG, "getTransaksi: "+getTanggalAwal()+"-"+getTanggalAkhir() );
         v.shimmerViewContainer.setVisibility(View.VISIBLE);
 
-        adapter = new TransaksiManifestAdapter(getContext(), listTransaksi);
-        llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        adapter = new TransaksiManifestDetailAdapter(this, listTransaksi);
+        llm = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         did = new DividerItemDecoration(v.rvResult.getContext(), llm.getOrientation());
         v.rvResult.setHasFixedSize(true);
         v.rvResult.setLayoutManager(llm);
 //        v.recyclerViewTransaksiTerakhir.addItemDecoration(did);
         v.rvResult.setAdapter(adapter);
-
-        String urlfix;
-        if(tanggal.equalsIgnoreCase("ada")){
-            urlfix = URLs.LIST_LAPORAN_TRANSAKSI;
-        }else {
-            urlfix = URLs.LIST_LAPORAN_TRANSAKSI+"?tanggal_awal="+getTanggalAwal()+"&tanggal_akhir="+getTanggalAkhir();
-        }
-
-        StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,urlfix , new Response.Listener<String>() {
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, URLs.LIST_LAPORAN_TRANSAKSI+"?id_keberangkatan="+getIntent().getStringExtra("id_keberangkatan"), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e("response get transaksi : ", response);
@@ -191,6 +90,7 @@ public class LaporanManifestFragment extends Fragment {
                     Log.e("TAG", "onResponse: " + success );
                     if (success.equalsIgnoreCase("true")) {
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        v.tvTotal.setText("Total : "+formatRupiah(Double.valueOf(jsonObject.getString("total"))));
                         for (int i = 0; i < jsonArray.length(); i++) {
                             try {
                                 JSONObject object = jsonArray.getJSONObject(i);
@@ -264,6 +164,7 @@ public class LaporanManifestFragment extends Fragment {
                     v.empty.setVisibility(View.VISIBLE);
                 }
                 v.rvResult.setVisibility(View.VISIBLE);
+                v.rlTotal.setVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
                 v.shimmerViewContainer.setVisibility(View.GONE);
                 v.empty.setVisibility(View.GONE);
@@ -300,100 +201,14 @@ public class LaporanManifestFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
 
     }
 
-    private void getDate(String point) {
-        final Calendar calendar = Calendar.getInstance();
-        int yy = calendar.get(Calendar.YEAR);
-        int mm = calendar.get(Calendar.MONTH);
-        int dd = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                SimpleDateFormat simpleDateFormat = null;
-                Date date = null;
-                String dayString ="";
-                Log.d( "onDateSet: ",String.valueOf(dayString));
-                String datePatams = "";
-                String dateString = "";
-                if(point.equalsIgnoreCase("awal")){
-                    v.tvTanggal.setText(datePatams);
-                }else {
-                    v.tvTanggalAkhir.setText(datePatams);
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    simpleDateFormat = new SimpleDateFormat("EEEE");
-                }
-                date = new Date(year, monthOfYear, dayOfMonth - 1);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    dayString = simpleDateFormat.format(date) + ", ";
-                }
-                datePatams = formadDateParams(year,monthOfYear+1, dayOfMonth);
-                dateString = formateDateString(year,monthOfYear+1, dayOfMonth,dayString);
-                if(point.equalsIgnoreCase("awal")){
-//                    v.tvTanggal.setText(datePatams);
-                    v.tvTanggal.setText(dateString);
-                    setTanggalAwal(datePatams);
-                    setTanggalAwalString(dateString);
-                }else {
-//                    v.tvTanggalAkhir.setText(datePatams);
-                    v.tvTanggalAkhir.setText(dateString);
-                    setTanggalAkhir(datePatams);
-                    setTanggalAkhirString(dateString);
-                }
-            }
-        }, yy, mm, dd);
-        datePicker.show();
-    }
-
-    String formadDateParams (int year, int month, int day){
-        String days = String.valueOf(day);
-        String months = String.valueOf(month);
-        String years = String.valueOf(year);
-        if(day<10){
-            days = '0'+days;
-        }
-        if(month<10){
-            months = '0'+months;
-        }
-        return  years + "-" + months + "-" + days;
-    }
-
-    String formateDateString(int year, int month, int day, String dayName){
-        String months = "", days = String.valueOf(day), years =String.valueOf(year);
-        if(month == 1){
-            months = "Januari";
-        }else if(month == 2){
-            months = "Februari";
-        }else if(month == 3){
-            months = "Maret";
-        }else if(month == 4){
-            months = "April";
-        }else if(month == 5){
-            months = "Mei";
-        }else if(month == 6){
-            months = "Juni";
-        }else if(month == 7){
-            months = "Juli";
-        }else if(month == 8){
-            months = "Agustus";
-        }else if(month == 9){
-            months = "September";
-        }else if(month == 10){
-            months = "Oktober";
-        }else if(month == 11){
-            months = "November";
-        }else if(month == 12){
-            months = "Desember";
-        }
-        if(day<10){
-            days = '0'+days;
-        }
-        return dayName+ day +" "+ months + " " + years;
+    private String formatRupiah(Double number) {
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        return formatRupiah.format(number);
     }
 }

@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".activity.LaporanManifestDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.LaporanTransaksiDetailActivity"
             android:exported="false" />
         <activity android:name=".activity.AktivasiAct" />
