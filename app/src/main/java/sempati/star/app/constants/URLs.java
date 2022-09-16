@@ -1,8 +1,8 @@
 package sempati.star.app.constants;
 
 public class URLs {
-    private static final String ROOT_URL                    = "http://192.168.1.7:8080";
-//    private static final String ROOT_URL = "https://sempati-api.herokuapp.com";
+//    private static final String ROOT_URL                    = "http://192.168.1.6:8080";
+    private static final String ROOT_URL                    = "http://api.sempatistar.com";
 
     private static final String API                         = ROOT_URL+ "/api";
     private static final String AUTH                        = API +"/auth";
