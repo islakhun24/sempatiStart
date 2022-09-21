@@ -47,6 +47,7 @@
             android:layout_marginTop="-40dp"
             android:layout_marginBottom="16dp">
             <RelativeLayout
+                android:id="@+id/rlKeberangkatan"
                 android:padding="16dp"
                 android:background="#fff"
                 android:layout_width="match_parent"
@@ -106,6 +107,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp">
             <RelativeLayout
+                android:id="@+id/rlTujuan"
                 android:padding="16dp"
                 android:background="#fff"
                 android:layout_width="match_parent"
@@ -287,7 +289,7 @@
                     android:layout_below="@id/tvPenumpang"
                     android:background="#fff"
                     android:inputType="number"
-                    android:hint="Masukan jumlah penumpang"
+                    android:text="1"
                     android:layout_toRightOf="@id/imgPenumpang"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

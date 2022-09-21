@@ -62,7 +62,7 @@ import sempati.star.app.utils.Device;
 public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareClickedListener{
     Button btnBayar;
     int keberankatanId, asalAgenId, tujuanAgenId, jumlahPenumpang,hargaTiket, perubahanHarga, jadwalHarga, hargaAwal;
-    TextView namaKelas;
+    TextView namaKelas, tvDari, tvDari2, tvKe, tvKe2, tvSisaKursi;
     ImageView back;
     SharedPrefManager sharedPrefManager;
     ArrayList<Kursi.Seat> seatArrayList = new ArrayList<>();
@@ -119,6 +119,16 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
         progressBar = findViewById(R.id.progersBar);
         rvSeat = findViewById(R.id.rvSeat);
         btnBatal = findViewById(R.id.btnBatal);
+        tvDari = findViewById(R.id.tvDari);
+        tvDari2 = findViewById(R.id.tvDari2);
+        tvKe = findViewById(R.id.tvKe);
+        tvKe2 = findViewById(R.id.tvKe2);
+        tvSisaKursi = findViewById(R.id.tvSisaKursi);
+        tvDari.setText(getIntent().getStringExtra("dari"));
+        tvDari2.setText(getIntent().getStringExtra("dari2"));
+        tvKe.setText(getIntent().getStringExtra("ke"));
+        tvKe2.setText(getIntent().getStringExtra("ke2"));
+        tvSisaKursi.setText("Sisa "+getIntent().getStringExtra("kursi")+" kursi");
         layoutManager = new LinearLayoutManager(this);
         rvSeat.setLayoutManager(layoutManager);
         rvSeat.setItemAnimator(new DefaultItemAnimator());
@@ -193,6 +203,7 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
         container.startShimmer();
         container.setVisibility(View.VISIBLE);
         seatArrayList.clear();
+        Log.e("TAG", "fetchDataKursi: fame " +keberankatanId + " "+androidSharedPref.getAndroidID());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URLs.SELECT_VIEW_KURSI_TIKET+"/"+keberankatanId+"/"+androidSharedPref.getAndroidID(),
                 new Response.Listener<String>() {
                     @Override

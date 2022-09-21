@@ -140,10 +140,16 @@ public class LoginAct extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG ERR", error.toString());
-                        Toast.makeText(LoginAct.this, error.toString(), Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                        btnLogin.setEnabled(true);
+                        try {
+                            VolleyError responseError = new VolleyError( new String(error.networkResponse.data));
+                            JSONObject object = new JSONObject(responseError.getMessage());
+                            Toast.makeText(LoginAct.this, object.getString("message"), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            btnLogin.setEnabled(true);
+                        }catch (JSONException e){
+                            Log.e(TAG, "onErrorResponse: "+ e );
+                        }
+
                     }
                 })
         {

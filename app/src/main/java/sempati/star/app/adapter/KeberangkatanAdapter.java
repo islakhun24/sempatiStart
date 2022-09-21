@@ -85,7 +85,12 @@ public class KeberangkatanAdapter extends RecyclerView.Adapter<KeberangkatanAdap
         TextView tvSisaKursi = holder.tvSisaKursi;
         TextView tvKelas = holder.tvKelas;
         ImageView imgNaik = holder. imgNaik;
-        String rupiah = formatRupiah(Double.valueOf(trayekArrayList.get(listPosition).getHargaTrayek()));
+        String rupiah;
+        if(trayekArrayList.get(listPosition).getPerubahanHarga() == 0){
+            rupiah = formatRupiah(Double.valueOf(trayekArrayList.get(listPosition).getHargaTrayek()));
+        }else {
+            rupiah = formatRupiah(Double.valueOf(trayekArrayList.get(listPosition).getPerubahanHarga()));
+        }
 
         tvDari.setText(trayekArrayList.get(listPosition).getTblTrayek().getAsal().getNamaAgen());
         tvKe.setText(trayekArrayList.get(listPosition).getTblTrayek().getTujuan().getNamaAgen());
@@ -113,6 +118,11 @@ public class KeberangkatanAdapter extends RecyclerView.Adapter<KeberangkatanAdap
                 i.putExtra("perubahanHarga", trayekArrayList.get(listPosition).getPerubahanHarga());
                 i.putExtra("jadwalHarga", trayekArrayList.get(listPosition).getJadwalHarga());
                 i.putExtra("hargaAwal", trayekArrayList.get(listPosition).getHargaAwal());
+                i.putExtra("dari", trayekArrayList.get(listPosition).getTblTrayek().getAsal().getNamaAgen());
+                i.putExtra("dari2", trayekArrayList.get(listPosition).getTblTrayek().getAsal().getKodeAgn());
+                i.putExtra("ke", trayekArrayList.get(listPosition).getTblTrayek().getTujuan().getNamaAgen());
+                i.putExtra("ke2", trayekArrayList.get(listPosition).getTblTrayek().getTujuan().getKodeAgn());
+                i.putExtra("kursi", trayekArrayList.get(listPosition).getTblKeberangkatan().getRefLambung().getRefKelaArmada().getJumlahSeat());
                 context.startActivity(i);
             }
         });

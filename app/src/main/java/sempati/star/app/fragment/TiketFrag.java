@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +88,7 @@ public class TiketFrag extends Fragment {
     Button btnCari;
     SharedPrefManager sharedPrefManager;
     EditText etKeberankatan, etTujuan, etTanggal, etJumlahKursi;
+    RelativeLayout rlKeberangkatan, rlTujuan;
     ArrayList<Agen> agenArrayList = new ArrayList<>();
     ArrayList<Agen> agenKeberankatanArrayList = new ArrayList<>();
     ArrayList<String> agens = new ArrayList<>();
@@ -150,9 +153,10 @@ public class TiketFrag extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tiket, container, false);
 
-
         sharedPrefManager = new SharedPrefManager(getContext());
         etKeberankatan = v.findViewById(R.id.etKeberangkatan);
+        rlKeberangkatan = v.findViewById(R.id.rlKeberangkatan);
+        rlTujuan = v.findViewById(R.id.rlTujuan);
         etKeberankatan.setInputType(InputType.TYPE_NULL);
         etTujuan = v.findViewById(R.id.etTujuan);
         etTujuan.setInputType(InputType.TYPE_NULL);
@@ -195,6 +199,7 @@ public class TiketFrag extends Fragment {
                 datePicker.show();
             }
         });
+        newdateFame();
         btnCari = v.findViewById(R.id.btnCari);
         btnCari.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,8 +247,20 @@ public class TiketFrag extends Fragment {
                 showDialogKeberangkatan();
             }
         });
+        rlKeberangkatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogKeberangkatan();
+            }
+        });
 
         etTujuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogTujuan(keberangkatanAgenId);
+            }
+        });
+        rlTujuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogTujuan(keberangkatanAgenId);
@@ -877,9 +894,9 @@ public class TiketFrag extends Fragment {
                 recyclerView.setLayoutManager(llm);
                 recyclerView.addItemDecoration(did);
                 recyclerView.setAdapter(adapter);
-                final ProgressDialog progressDialog = new ProgressDialog(getContext());
-                progressDialog.setMessage("Mengambil Data ...");
-                progressDialog.show();
+//                final ProgressDialog progressDialog = new ProgressDialog(getContext());
+//                progressDialog.setMessage("Mengambil Data ...");
+//                progressDialog.show();
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.GONE);
 //                shimmerFrameLayout.setVisibility(View.VISIBLE);
@@ -895,7 +912,7 @@ public class TiketFrag extends Fragment {
                                 emptyView.setVisibility(View.GONE);
 //                                shimmerFrameLayout.setVisibility(View.GONE);
                                 recyclerView.setVisibility(View.VISIBLE);
-                                progressDialog.dismiss();
+//                                progressDialog.dismiss();
                                 for (int i = 0; i <jsonArray.length(); i++){
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     Agen agen = new Agen();
@@ -907,7 +924,7 @@ public class TiketFrag extends Fragment {
                                 emptyView.setVisibility(View.VISIBLE);
                                 shimmerFrameLayout.setVisibility(View.GONE);
                                 recyclerView.setVisibility(View.GONE);
-                                progressDialog.dismiss();
+//                                progressDialog.dismiss();
                             }
 
                         } catch (JSONException e) {
@@ -916,7 +933,7 @@ public class TiketFrag extends Fragment {
 
                         }
                         adapter.notifyDataSetChanged();
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         recyclerView.setVisibility(View.VISIBLE);
                         shimmerFrameLayout.setVisibility(View.GONE);
                     }
@@ -1045,5 +1062,27 @@ public class TiketFrag extends Fragment {
 //                return true;
 //            }
 //        });
+    }
+
+    private void newdateFame(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormatYear = new SimpleDateFormat("yyyy");
+        DateFormat dateFormatMonth = new SimpleDateFormat("MM");
+        DateFormat dateFormatDay = new SimpleDateFormat("dd");
+        Date date = new Date();
+//        dateFormat.format(date);
+        setTanggal(dateFormat.format(date));
+
+        String dayString ="";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dateFormat = new SimpleDateFormat("EEEE");
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dayString = dateFormat.format(date) + ", ";
+        }
+        String tang = formateDateString(Integer.parseInt(dateFormatYear.format(date)),Integer.parseInt(dateFormatMonth.format(date)), Integer.parseInt(dateFormatDay.format(date)),dayString);
+        etTanggal.setText(tang);
+        setTanggalString(tang);
+//        Toast.makeText(getContext(), formateDateString(Integer.parseInt(dateFormatYear.format(date)),Integer.parseInt(dateFormatMonth.format(date)), Integer.parseInt(dateFormatDay.format(date)),dayString), Toast.LENGTH_SHORT).show();
     }
 }
