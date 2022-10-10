@@ -256,6 +256,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
             <RelativeLayout
+                android:id="@+id/rlJumlahPenumpang"
                 android:padding="16dp"
                 android:background="#fff"
                 android:layout_width="match_parent"
@@ -281,6 +282,7 @@
                     android:textSize="12sp"/>
                 <EditText
                     android:id="@+id/etJumlahKursi"
+                    android:focusable="false"
                     android:textSize="14sp"
                     android:textColorHint="@color/colorGray5"
                     android:textColor="@color/colorGray5"

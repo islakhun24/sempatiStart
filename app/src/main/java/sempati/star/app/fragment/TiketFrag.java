@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -88,7 +89,7 @@ public class TiketFrag extends Fragment {
     Button btnCari;
     SharedPrefManager sharedPrefManager;
     EditText etKeberankatan, etTujuan, etTanggal, etJumlahKursi;
-    RelativeLayout rlKeberangkatan, rlTujuan;
+    RelativeLayout rlKeberangkatan, rlTujuan, rlJumlahPenumpang;
     ArrayList<Agen> agenArrayList = new ArrayList<>();
     ArrayList<Agen> agenKeberankatanArrayList = new ArrayList<>();
     ArrayList<String> agens = new ArrayList<>();
@@ -200,6 +201,15 @@ public class TiketFrag extends Fragment {
             }
         });
         newdateFame();
+        rlJumlahPenumpang = v.findViewById(R.id.rlJumlahPenumpang);
+        rlJumlahPenumpang.setOnClickListener(x -> {
+            listJumlah();
+//            Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT).show();
+        });
+        etJumlahKursi.setOnClickListener(x -> {
+            listJumlah();
+//            Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT).show();
+        });
         btnCari = v.findViewById(R.id.btnCari);
         btnCari.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1084,5 +1094,80 @@ public class TiketFrag extends Fragment {
         etTanggal.setText(tang);
         setTanggalString(tang);
 //        Toast.makeText(getContext(), formateDateString(Integer.parseInt(dateFormatYear.format(date)),Integer.parseInt(dateFormatMonth.format(date)), Integer.parseInt(dateFormatDay.format(date)),dayString), Toast.LENGTH_SHORT).show();
+    }
+
+    private void listJumlah(){
+        String[] pilihan = {"1", "2","3", "4", "5", "6", "7","8", "9","10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"};
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setTitle("Jumlah penumpang")
+                .setItems(pilihan, (dialog, which) -> {
+                    Log.e("TAG", "listJumlah: "+ String.valueOf(which));
+                    switch (which) {
+                        case 0:
+                            etJumlahKursi.setText(pilihan[0]);
+                            break;
+                        case 1:
+                            etJumlahKursi.setText(pilihan[1]);
+                            break;
+                        case 2:
+                            etJumlahKursi.setText(pilihan[2]);
+                            break;
+                        case 3:
+                            etJumlahKursi.setText(pilihan[3]);
+                            break;
+                        case 4:
+                            etJumlahKursi.setText(pilihan[4]);
+                            break;
+                        case 5:
+                            etJumlahKursi.setText(pilihan[5]);
+                            break;
+                        case 6:
+                            etJumlahKursi.setText(pilihan[6]);
+                            break;
+                        case 7:
+                            etJumlahKursi.setText(pilihan[7]);
+                            break;
+                        case 8:
+                            etJumlahKursi.setText(pilihan[8]);
+                            break;
+                        case 9:
+                            etJumlahKursi.setText(pilihan[9]);
+                            break;
+                        case 10:
+                            etJumlahKursi.setText(pilihan[10]);
+                            break;
+                        case 11:
+                            etJumlahKursi.setText(pilihan[11]);
+                            break;
+                        case 12:
+                            etJumlahKursi.setText(pilihan[12]);
+                            break;
+                        case 13:
+                            etJumlahKursi.setText(pilihan[13]);
+                            break;
+                        case 14:
+                            etJumlahKursi.setText(pilihan[14]);
+                            break;
+                        case 15:
+                            etJumlahKursi.setText(pilihan[15]);
+                            break;
+                        case 16:
+                            etJumlahKursi.setText(pilihan[16]);
+                            break;
+                        case 17:
+                            etJumlahKursi.setText(pilihan[17]);
+                            break;
+                        case 18:
+                            etJumlahKursi.setText(pilihan[18]);
+                            break;
+                        case 19:
+                            etJumlahKursi.setText(pilihan[19]);
+                            break;
+                        default:
+                            Toast.makeText(getContext(), "tidak ditemukan", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                });
+        alert.show();
     }
 }
