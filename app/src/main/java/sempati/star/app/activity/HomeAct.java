@@ -7,8 +7,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +36,7 @@ public class HomeAct extends AppCompatActivity implements BottomNavigationView.O
     FloatingActionButton fab;
     Device device = new Device();
     public static final int PERMISSION_BLUETOOTH = 1;
+    public String androidId;
 
     AndroidSharedPref androidSharedPref;
     @Override
@@ -42,6 +46,13 @@ public class HomeAct extends AppCompatActivity implements BottomNavigationView.O
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, HomeAct.PERMISSION_BLUETOOTH);
         }
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+       androidSharedPref = new AndroidSharedPref(this);
+       if(androidSharedPref.getAndroidID().equalsIgnoreCase("")){
+           androidSharedPref.saveAndroidID( telephonyManager.getDeviceId());
+
+       }
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
