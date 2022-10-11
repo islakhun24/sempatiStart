@@ -30,6 +30,7 @@ import sempati.star.app.fragment.TransaksiFrag;
 import sempati.star.app.services.AndroidSharedPref;
 import sempati.star.app.services.SharedPrefManager;
 import sempati.star.app.utils.Device;
+import android.os.Build;
 
 public class HomeAct extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
@@ -46,12 +47,22 @@ public class HomeAct extends AppCompatActivity implements BottomNavigationView.O
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, HomeAct.PERMISSION_BLUETOOTH);
         }
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
 
        androidSharedPref = new AndroidSharedPref(this);
-       if(androidSharedPref.getAndroidID().equalsIgnoreCase("")){
-           androidSharedPref.saveAndroidID( telephonyManager.getDeviceId());
-
+       if(isNullOrEmpty(androidSharedPref.getAndroidID())){
+           if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+               Log.e("TAG", "onCreate: "+Settings.Secure.getString(
+                       this.getContentResolver(),
+                       Settings.Secure.ANDROID_ID));
+               androidSharedPref.saveAndroidID(Settings.Secure.getString(
+                       this.getContentResolver(),
+                       Settings.Secure.ANDROID_ID));
+           }else {
+               TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+               Log.e("TAG", "onCreate: "+ telephonyManager.getDeviceId());
+               androidSharedPref.saveAndroidID(telephonyManager.getDeviceId());
+           }
        }
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -95,6 +106,10 @@ public class HomeAct extends AppCompatActivity implements BottomNavigationView.O
                 break;
         }
         return loadFragment(fragment);
+    }
+
+    public boolean isNullOrEmpty(String str) {
+        return str == null || str.isEmpty();
     }
 
 
