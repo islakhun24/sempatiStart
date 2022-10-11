@@ -107,6 +107,20 @@
                 android:text="Sisa 40 kursi"
                 android:layout_below="@id/tvDari2"
                 android:layout_alignParentLeft="true"/>
+            <TextView
+                android:id="@+id/tvHarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sisa 40 kursi"
+                android:layout_below="@id/tvKe2"
+                android:layout_alignParentRight="true"/>
+            <TextView
+                android:id="@+id/tvHargaTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sisa 40 kursi"
+                android:layout_below="@id/tvHarga"
+                android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
     </LinearLayout>

@@ -31,12 +31,14 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import dev.shreyaspatil.MaterialDialog.MaterialDialog;
@@ -62,7 +64,7 @@ import sempati.star.app.utils.Device;
 public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareClickedListener{
     Button btnBayar;
     int keberankatanId, asalAgenId, tujuanAgenId, jumlahPenumpang,hargaTiket, perubahanHarga, jadwalHarga, hargaAwal;
-    TextView namaKelas, tvDari, tvDari2, tvKe, tvKe2, tvSisaKursi;
+    TextView namaKelas, tvDari, tvDari2, tvKe, tvKe2, tvSisaKursi, tvHarga, tvHargaTotal;
     ImageView back;
     SharedPrefManager sharedPrefManager;
     ArrayList<Kursi.Seat> seatArrayList = new ArrayList<>();
@@ -123,12 +125,18 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
         tvDari2 = findViewById(R.id.tvDari2);
         tvKe = findViewById(R.id.tvKe);
         tvKe2 = findViewById(R.id.tvKe2);
+        tvHarga = findViewById(R.id.tvHarga);
         tvSisaKursi = findViewById(R.id.tvSisaKursi);
+        tvHargaTotal = findViewById(R.id.tvHargaTotal);
         tvDari.setText(getIntent().getStringExtra("dari"));
         tvDari2.setText(getIntent().getStringExtra("dari2"));
         tvKe.setText(getIntent().getStringExtra("ke"));
         tvKe2.setText(getIntent().getStringExtra("ke2"));
-        tvSisaKursi.setText("Sisa "+getIntent().getStringExtra("kursi")+" kursi");
+        tvHarga.setText("Harga : "+getIntent().getStringExtra("rupiah"));
+        int hargatotal = Integer.valueOf(getIntent().getStringExtra("rupiahNoFormat")) * Integer.valueOf(getIntent().getStringExtra("jumlahKursiString"));
+        tvHargaTotal.setText("Total Bayar : "+formatRupiah(Double.parseDouble(String.valueOf(hargatotal))));
+        tvSisaKursi.setText(getIntent().getStringExtra("jumlahKursiString")+" kursi");
+
         layoutManager = new LinearLayoutManager(this);
         rvSeat.setLayoutManager(layoutManager);
         rvSeat.setItemAnimator(new DefaultItemAnimator());
@@ -479,5 +487,11 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
         };
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private String formatRupiah(Double number){
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        return formatRupiah.format(number);
     }
 }

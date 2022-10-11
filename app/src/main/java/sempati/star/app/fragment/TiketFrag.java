@@ -245,6 +245,7 @@ public class TiketFrag extends Fragment {
                 i.putExtra("tanggal", tanggal);
                 i.putExtra("asalAgenId", keberangkatanId);
                 i.putExtra("jumlahKursi", jumlahKursi);
+                i.putExtra("jumlahKursiString", jumlah);
                 startActivity(i);
 
 //                Log.e(String.valueOf(tujuanId), String.valueOf(keberangkatanId));

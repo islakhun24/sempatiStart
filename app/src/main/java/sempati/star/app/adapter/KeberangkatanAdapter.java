@@ -30,6 +30,7 @@ public class KeberangkatanAdapter extends RecyclerView.Adapter<KeberangkatanAdap
     private ArrayList<Trayek> trayekArrayList;
     private Context context;
     private int jumlahKursi;
+    private String jumlahKursiString;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout btnBeli;
         TextView tvNama, tvDari, tvKe, tvDari2, tvKe2;
@@ -55,10 +56,11 @@ public class KeberangkatanAdapter extends RecyclerView.Adapter<KeberangkatanAdap
         }
     }
 
-    public KeberangkatanAdapter(ArrayList<Trayek> trayeks, Context context, int jumlahKursi) {
+    public KeberangkatanAdapter(ArrayList<Trayek> trayeks, Context context, int jumlahKursi, String jumlahKursiString) {
         this.trayekArrayList = trayeks;
         this.context = context;
         this.jumlahKursi = jumlahKursi;
+        this.jumlahKursiString = jumlahKursiString;
     }
 
     @Override
@@ -85,11 +87,13 @@ public class KeberangkatanAdapter extends RecyclerView.Adapter<KeberangkatanAdap
         TextView tvSisaKursi = holder.tvSisaKursi;
         TextView tvKelas = holder.tvKelas;
         ImageView imgNaik = holder. imgNaik;
-        String rupiah;
+        String rupiah, rupiahNoFormat;
         if(trayekArrayList.get(listPosition).getPerubahanHarga() == 0){
             rupiah = formatRupiah(Double.valueOf(trayekArrayList.get(listPosition).getHargaTrayek()));
+            rupiahNoFormat = String.valueOf(trayekArrayList.get(listPosition).getHargaTrayek());
         }else {
             rupiah = formatRupiah(Double.valueOf(trayekArrayList.get(listPosition).getPerubahanHarga()));
+            rupiahNoFormat = String.valueOf(trayekArrayList.get(listPosition).getPerubahanHarga());
         }
 
         tvDari.setText(trayekArrayList.get(listPosition).getTblTrayek().getAsal().getNamaAgen());
@@ -114,6 +118,9 @@ public class KeberangkatanAdapter extends RecyclerView.Adapter<KeberangkatanAdap
                 i.putExtra("asalAgenId", trayekArrayList.get(listPosition).getTblTrayek().getAsal().getId());
                 i.putExtra("tujuanAgenId", trayekArrayList.get(listPosition).getTblTrayek().getTujuan().getId());
                 i.putExtra("jumlahPenumpang", jumlahKursi);
+                i.putExtra("jumlahKursiString", jumlahKursiString);
+                i.putExtra("rupiah", rupiah);
+                i.putExtra("rupiahNoFormat", rupiahNoFormat);
                 i.putExtra("hargaTiket", trayekArrayList.get(listPosition).getHargaTrayek());
                 i.putExtra("perubahanHarga", trayekArrayList.get(listPosition).getPerubahanHarga());
                 i.putExtra("jadwalHarga", trayekArrayList.get(listPosition).getJadwalHarga());

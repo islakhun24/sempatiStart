@@ -46,7 +46,7 @@ public class TiketResultAct extends AppCompatActivity {
     LinearLayout btnBeli;
     ImageView back;
     int tujuanAgenId, asalAgenId, jumlahKursi;
-    String tanggal, tanggalString, dari, ke;
+    String tanggal, tanggalString, dari, ke, jumlahKursiString;
     SharedPrefManager sharedPrefManager;
     ArrayList<Trayek> trayekArrayList = new ArrayList<>();
     private static RecyclerView.Adapter adapter;
@@ -80,6 +80,7 @@ public class TiketResultAct extends AppCompatActivity {
         tujuanAgenId = getIntent().getIntExtra("tujuanAgenId", 0);
         asalAgenId = getIntent().getIntExtra("asalAgenId", 0);
         jumlahKursi = getIntent().getIntExtra("jumlahKursi", 0);
+        jumlahKursiString = String.valueOf(jumlahKursi);
         tanggal = getIntent().getStringExtra("tanggal");
         tanggalString = getIntent().getStringExtra("tanggalString");
         dari = getIntent().getStringExtra("dari");
@@ -162,7 +163,7 @@ public class TiketResultAct extends AppCompatActivity {
                                 trayekArrayList.add(trayek);
 
                             }
-                            adapter = new KeberangkatanAdapter(trayekArrayList, TiketResultAct.this, jumlahKursi);
+                            adapter = new KeberangkatanAdapter(trayekArrayList, TiketResultAct.this, jumlahKursi, jumlahKursiString);
                             rvResult.setAdapter(adapter);
                         } catch (JSONException e) {
                             Log.e("TAG", e.toString());
