@@ -173,8 +173,25 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
             public void onClick(View v) {
                Intent i = new Intent( SeatAct.this, PembayaranAct.class);
                i.putExtra("keberangkatanId", keberankatanId);
-               i.putExtra("android_id", deviceId);
+               i.putExtra("android_id", android.provider.Settings.Secure.getString(
+                       getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                i.putExtra("from", "not fame");
+//               i.putExtra("keberankatanId", getIntent().getStringExtra("keberankatanId"));
+//               i.putExtra("asalAgenId", getIntent().getStringExtra("asalAgenId"));
+//               i.putExtra("tujuanAgenId", getIntent().getStringExtra("tujuanAgenId"));
+//               i.putExtra("jumlahPenumpang", getIntent().getStringExtra("jumlahPenumpang"));
+//               i.putExtra("jumlahKursiString", getIntent().getStringExtra("jumlahKursiString"));
+//               i.putExtra("rupiah", getIntent().getStringExtra("rupiah"));
+//               i.putExtra("rupiahNoFormat", getIntent().getStringExtra("rupiahNoFormat"));
+//               i.putExtra("hargaTiket", getIntent().getStringExtra("hargaTiket"));
+//               i.putExtra("perubahanHarga", getIntent().getStringExtra("perubahanHarga"));
+//               i.putExtra("jadwalHarga", getIntent().getStringExtra("jadwalHarga"));
+//               i.putExtra("hargaAwal", getIntent().getStringExtra("hargaAwal"));
+//               i.putExtra("dari", getIntent().getStringExtra("dari"));
+//               i.putExtra("dari2", getIntent().getStringExtra("dari2"));
+//               i.putExtra("ke", getIntent().getStringExtra("ke"));
+//               i.putExtra("ke2", getIntent().getStringExtra("ke2"));
+//               i.putExtra("kursi", getIntent().getStringExtra("kursi"));
                startActivity(i);
             }
         });
@@ -443,7 +460,8 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
                 params.put("tujuan_id", String.valueOf(tujuanAgenId));
                 params.put("no_kursi", String.valueOf(noKursi));
                 params.put("nama_kursi", String.valueOf(nama_kursi));
-                params.put("android_id", deviceId);
+                params.put("android_id", android.provider.Settings.Secure.getString(
+                        getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 params.put("jumlah", String.valueOf(jumlahPenumpang));
                 params.put("harga_tiket", String.valueOf(hargaTiket));
                 return params;
@@ -481,7 +499,8 @@ public class SeatAct extends AppCompatActivity implements SeatAdapter.OnShareCli
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("android_id", String.valueOf(deviceId));
+                params.put("android_id", android.provider.Settings.Secure.getString(
+                        getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 return params;
             }
         };

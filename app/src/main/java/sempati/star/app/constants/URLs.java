@@ -2,8 +2,8 @@ package sempati.star.app.constants;
 
 public class URLs {
 
-//    private static final String ROOT_URL                    = "http://192.168.1.6:8080";
-    private static final String ROOT_URL                    = "http://api.sempatistar.com";
+    private static final String ROOT_URL                    = "http://192.168.1.4:8080";
+//    private static final String ROOT_URL                    = "http://api.sempatistar.com";
 
     private static final String API                         = ROOT_URL+ "/api";
     private static final String AUTH                        = API +"/auth";
@@ -84,5 +84,6 @@ public class URLs {
     public static final String LIST_TRANSAKSI           = TIKET+ "/get_transaksi";
     public static final String LIST_LAPORAN_TRANSAKSI   = TIKET+ "/get_laporan_transaksi";
     public static final String LIST_BOOKING             = TIKET+ "/get_booking";
+    public static final String POST_DATA_STATUS_BAYAR   = TIKET+ "/ubahstatusbayar";
     public static final String DETAIL_AKUN              = AUTH+ "/user";
 }

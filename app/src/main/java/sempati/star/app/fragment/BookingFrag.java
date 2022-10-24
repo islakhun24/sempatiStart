@@ -156,6 +156,7 @@ public class BookingFrag extends Fragment {
                                 transaksiModel.setKeberangkatan_jam(objectkeberangkatan.getString("jam"));
                                 transaksiModel.setKelas_armada_nama(objectKelasArmada.getString("nama_kelas"));
                                 transaksiModel.setKelas_armada_jumlah_seat(objectKelasArmada.getString("jumlah_seat"));
+                                transaksiModel.setStatus_bayar(object.getString("status_bayar"));
 
                                 listBooking.add(transaksiModel);
                             } catch (JSONException e) {

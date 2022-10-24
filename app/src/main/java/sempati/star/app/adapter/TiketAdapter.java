@@ -34,7 +34,7 @@ public class TiketAdapter extends RecyclerView.Adapter<TiketAdapter.MyViewHolder
     private int jumlahKursi;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView keberangkatanTujuan, tanggalKeberangkatan, tvBussClass, tvPenumpang, tvNomorKursi, tvTanggal, tvAgen_kantor, tvMetode_keterangan, tvHarga, qrCode;
+        TextView keberangkatanTujuan, tanggalKeberangkatan, tvBussClass, tvPenumpang, tvNomorKursi, tvTanggal, tvAgen_kantor, tvMetode_keterangan, tvHarga, qrCode, status_bayar;
         ImageView imageView;
 
         public MyViewHolder(View itemView) {
@@ -50,6 +50,7 @@ public class TiketAdapter extends RecyclerView.Adapter<TiketAdapter.MyViewHolder
             this.tvMetode_keterangan = (TextView) itemView.findViewById(R.id.tvMetode);
             this.tvHarga = (TextView) itemView.findViewById(R.id.tvHarga);
             this.qrCode = (TextView) itemView.findViewById(R.id.qrCode);
+            this.status_bayar = (TextView) itemView.findViewById(R.id.kodeTransaksi);
         }
     }
 
@@ -72,7 +73,7 @@ public class TiketAdapter extends RecyclerView.Adapter<TiketAdapter.MyViewHolder
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        TextView keberangkatanTujuan, tanggalKeberangkatan, tvBussClass, tvPenumpang, tvNomorKursi, tvTanggal, tvAgen_kantor, tvMetode_keterangan, tvHarga, qrCode;
+        TextView keberangkatanTujuan, tanggalKeberangkatan, tvBussClass, tvPenumpang, tvNomorKursi, tvTanggal, tvAgen_kantor, tvMetode_keterangan, tvHarga, qrCode, status_bayar;
         ImageView imageView;
         PembayranDetail object = tiketArrayList.get(listPosition);
         FormatUtils formatUtils = new FormatUtils();
@@ -88,6 +89,7 @@ public class TiketAdapter extends RecyclerView.Adapter<TiketAdapter.MyViewHolder
         tvMetode_keterangan = holder.tvMetode_keterangan;
         tvHarga = holder.tvHarga;
         qrCode = holder.qrCode;
+        status_bayar = holder.status_bayar;
 
         String rupiah = formatRupiah(Double.valueOf(object.getHarga_tiket()));
         tvHarga.setText(rupiah);
@@ -99,6 +101,17 @@ public class TiketAdapter extends RecyclerView.Adapter<TiketAdapter.MyViewHolder
         tvNomorKursi.setText(object.getNo_kursi());
 //        tvTanggal.setText(formatUtils.dateIndonesia(object.getCr_datetime()));
         tvAgen_kantor.setText("Kantor");
+        String statusBayarS;
+        if(object.getStatusBayar().equalsIgnoreCase("1")){
+            status_bayar.setText("LUNAS");
+        }else if(object.getStatusBayar().equalsIgnoreCase("2")){
+            status_bayar.setText("PANJAR");
+        }else if(object.getStatusBayar().equalsIgnoreCase("3")){
+            status_bayar.setText("TRAVELOKA");
+        }else if(object.getStatusBayar().equalsIgnoreCase("4")){
+            status_bayar.setText("TRANSIT");
+        }
+
         tvMetode_keterangan.setText(object.getKet());
         qrCode.setText(object.getQrcode());
         Glide.with(context).load("https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl="+object.getQrcode()).into(imageView);

@@ -29,8 +29,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import dev.shreyaspatil.MaterialDialog.MaterialDialog;
@@ -58,7 +60,7 @@ public class PembayaranAct extends AppCompatActivity {
     String android_id;
     int keberankatanId;
     ArrayList <PembayranDetail> arrayList = new ArrayList<>();
-    TextView tvDari, tvDari2, tvKe, tvKe2, tvJam, tvSisaKursi, tvClass;
+    TextView tvDari, tvDari2, tvKe, tvKe2, tvJam, tvSisaKursi, tvClass, tvHarga;
     ShimmerFrameLayout container;
     RecyclerView rvResult;
     private RecyclerView.LayoutManager layoutManager;
@@ -71,7 +73,8 @@ public class PembayaranAct extends AppCompatActivity {
         setContentView(R.layout.activity_pembayaran);
         gson = new Gson();
         keberankatanId = getIntent().getIntExtra("keberangkatanId", 0);
-        android_id = getIntent().getStringExtra("android_id");
+        android_id = android.provider.Settings.Secure.getString(
+                getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         sharedPrefManager = new SharedPrefManager(this);
         status = sharedPrefManager.getUser().getStatusUser();
         btnBayar = findViewById(R.id.btnBayar);
@@ -92,6 +95,7 @@ public class PembayaranAct extends AppCompatActivity {
         tvKe2 = findViewById(R.id.tvKe2);
         tvJam = findViewById(R.id.tvJam);
         tvSisaKursi = findViewById(R.id.tvSisaKursi);
+        tvHarga = findViewById(R.id.tvHarga);
         btnBayar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +114,7 @@ public class PembayaranAct extends AppCompatActivity {
 
     }
 
-    void fechData(){
+    public void fechData(){
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Mengambil Data ...");
         progressDialog.show();
@@ -188,6 +192,7 @@ public class PembayaranAct extends AppCompatActivity {
 //                                    pembayranDetail.setLambung_id(jsonData.getString("lambung_id"));
                                     pembayranDetail.setNo_kursi(jsonData.getString("no_kursi"));
                                     pembayranDetail.setStatus(jsonData.getString("status"));
+                                    pembayranDetail.setStatusBayar(jsonData.getString("status_bayar"));
                                     pembayranDetail.setStatus_migrasi(jsonData.getString("status_migrasi"));
                                     pembayranDetail.setQrcode(jsonData.getString("qrcode"));
                                     pembayranDetail.setKet(jsonData.getString("ket"));
@@ -217,6 +222,7 @@ public class PembayaranAct extends AppCompatActivity {
                                 tvJam.setText(jsonDetail.getJSONObject("keberangkatan").getString("jam")+ " "+ jsonDetail.getJSONObject("keberangkatan").getString("waktu"));
                                 tvSisaKursi.setText("Jumlah "+jsonDetail.getJSONObject("keberangkatan").getJSONObject("lambung").getJSONObject("kelas_armada").getString("jumlah_seat")+" kursi");
                                 tvClass.setText(jsonDetail.getJSONObject("keberangkatan").getJSONObject("lambung").getString("nama"));
+                                tvHarga.setText(formatRupiah(Double.parseDouble(jsonArray.getJSONObject(0).getString("harga_tiket"))));
                             }
                             if(arrayList.size()!=0){
                                 rvResult.setVisibility(View.VISIBLE);
@@ -262,11 +268,11 @@ public class PembayaranAct extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 if(getIntent().getStringExtra("from").equalsIgnoreCase("fame")){
-
                     params.put("id", getIntent().getStringExtra("id"));
                 }else {
                     params.put("keberangkatan_id", String.valueOf(keberankatanId));
-                    params.put("android_id", String.valueOf(android_id));
+                    params.put("android_id", android.provider.Settings.Secure.getString(
+                            getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 }
 
                 return params;
@@ -283,7 +289,7 @@ public class PembayaranAct extends AppCompatActivity {
                 Toast.makeText(PembayaranAct.this,"Nama penumpang harus diisi!", Toast.LENGTH_LONG).show();
                 return;
             }
-            if(arrayList.get(i).getPenumpang_hp().equalsIgnoreCase("0")){
+            if(arrayList.get(i).getPenumpang_hp().equalsIgnoreCase("")){
                 Toast.makeText(PembayaranAct.this,"Nomor HP penumpang harus diisi!", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -302,7 +308,29 @@ public class PembayaranAct extends AppCompatActivity {
                                 Intent i = new Intent(PembayaranAct.this, TicketDoneAct.class);
                                 i.putExtra("data", json);
                                 i.putExtra("from", "not fame");
+                                i.putExtra("keberangkatan_id", arrayList.get(0).getKeberangkatan_id());
+                                i.putExtra("android_id", android.provider.Settings.Secure.getString(
+                                        getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                                 startActivity(i);
+//                                Intent i = new Intent(PembayaranAct.this, SeatAct.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                i.putExtra("keberankatanId", getIntent().getStringExtra("keberankatanId"));
+//                                i.putExtra("asalAgenId", getIntent().getStringExtra("asalAgenId"));
+//                                i.putExtra("tujuanAgenId", getIntent().getStringExtra("tujuanAgenId"));
+//                                i.putExtra("jumlahPenumpang", getIntent().getStringExtra("jumlahPenumpang"));
+//                                i.putExtra("jumlahKursiString", getIntent().getStringExtra("jumlahKursiString"));
+//                                i.putExtra("rupiah", getIntent().getStringExtra("rupiah"));
+//                                i.putExtra("rupiahNoFormat", getIntent().getStringExtra("rupiahNoFormat"));
+//                                i.putExtra("hargaTiket", getIntent().getStringExtra("hargaTiket"));
+//                                i.putExtra("perubahanHarga", getIntent().getStringExtra("perubahanHarga"));
+//                                i.putExtra("jadwalHarga", getIntent().getStringExtra("jadwalHarga"));
+//                                i.putExtra("hargaAwal", getIntent().getStringExtra("hargaAwal"));
+//                                i.putExtra("dari", getIntent().getStringExtra("dari"));
+//                                i.putExtra("dari2", getIntent().getStringExtra("dari2"));
+//                                i.putExtra("ke", getIntent().getStringExtra("ke"));
+//                                i.putExtra("ke2", getIntent().getStringExtra("ke2"));
+//                                i.putExtra("kursi", getIntent().getStringExtra("kursi"));
+//                                startActivity(i);
+//                                finish();
                             }else {
                                 new MaterialDialog.Builder(PembayaranAct.this)
                                         .setAnimation(R.raw.dissapointed)
@@ -385,7 +413,8 @@ public class PembayaranAct extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 String json = gson.toJson(arrayList);
                 params.put("penumpangArray", json);
-                params.put("android_id", String.valueOf(android_id));
+                params.put("android_id", android.provider.Settings.Secure.getString(
+                        getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 return params;
             }
         };
@@ -409,6 +438,25 @@ public class PembayaranAct extends AppCompatActivity {
                                 Intent i = new Intent(PembayaranAct.this, HomeAct.class);
 //                                i.putExtra("data", json);
                                 startActivity(i);
+//                                Intent i = new Intent(PembayaranAct.this, SeatAct.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                i.putExtra("keberankatanId", getIntent().getStringExtra("keberankatanId"));
+//                                i.putExtra("asalAgenId", getIntent().getStringExtra("asalAgenId"));
+//                                i.putExtra("tujuanAgenId", getIntent().getStringExtra("tujuanAgenId"));
+//                                i.putExtra("jumlahPenumpang", getIntent().getStringExtra("jumlahPenumpang"));
+//                                i.putExtra("jumlahKursiString", getIntent().getStringExtra("jumlahKursiString"));
+//                                i.putExtra("rupiah", getIntent().getStringExtra("rupiah"));
+//                                i.putExtra("rupiahNoFormat", getIntent().getStringExtra("rupiahNoFormat"));
+//                                i.putExtra("hargaTiket", getIntent().getStringExtra("hargaTiket"));
+//                                i.putExtra("perubahanHarga", getIntent().getStringExtra("perubahanHarga"));
+//                                i.putExtra("jadwalHarga", getIntent().getStringExtra("jadwalHarga"));
+//                                i.putExtra("hargaAwal", getIntent().getStringExtra("hargaAwal"));
+//                                i.putExtra("dari", getIntent().getStringExtra("dari"));
+//                                i.putExtra("dari2", getIntent().getStringExtra("dari2"));
+//                                i.putExtra("ke", getIntent().getStringExtra("ke"));
+//                                i.putExtra("ke2", getIntent().getStringExtra("ke2"));
+//                                i.putExtra("kursi", getIntent().getStringExtra("kursi"));
+//                                startActivity(i);
+//                                finish();
                             }else {
                                 new MaterialDialog.Builder(PembayaranAct.this)
                                         .setAnimation(R.raw.dissapointed)
@@ -492,11 +540,18 @@ public class PembayaranAct extends AppCompatActivity {
                 Gson gson = new Gson();
                 String json = gson.toJson(arrayList);
                 params.put("penumpangArray", json);
-                params.put("android_id", String.valueOf(android_id));
+                params.put("android_id", android.provider.Settings.Secure.getString(
+                        getApplication().getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 return params;
             }
         };
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private String formatRupiah(Double number){
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        return formatRupiah.format(number);
     }
 }

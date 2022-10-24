@@ -57,6 +57,7 @@
     <EditText
         android:id="@+id/nohpPenumpang"
         android:hint="Nomor Hp"
+        android:text="0"
         android:paddingRight="8dp"
         android:paddingLeft="8dp"
         android:inputType="number"
@@ -84,5 +85,40 @@
             android:layout_height="40dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/card_edittext"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:text="*jika dibawah harga tiket maka potongan, jika melebihi harga tiket maka harga baru."/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnStatusPay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status Bayar"/>
+        <EditText
+            android:id="@+id/etStatusPay"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:focusable="false"
+            android:text="Lunas"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/card_edittext"
+            android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:text="*jika panjar isilah jumlah uang yang diterima dikolom atas. jika transit cukup menulis keterangan Nopol bis sebelumnya."/>
     </LinearLayout>
 </LinearLayout>

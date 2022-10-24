@@ -18,6 +18,7 @@ public class PembayranDetail {
     String harga_tiket;
     String lambung_id;
     String status;
+    String statusBayar;
     String status_migrasi;
     String qrcode;
     String ket;
@@ -263,5 +264,11 @@ public class PembayranDetail {
         this.TujuanObject = tujuanObject;
     }
 
+    public String getStatusBayar() {
+        return statusBayar;
+    }
 
+    public void setStatusBayar(String statusBayar) {
+        this.statusBayar = statusBayar;
+    }
 }
