@@ -113,6 +113,7 @@ public class LaporanManifestDetailActivity extends AppCompatActivity {
                                 transaksiModel.setPenumpang_umum(object.getString("penumpang_umum"));
                                 transaksiModel.setTiba_id(object.getString("tiba_id"));
                                 transaksiModel.setStatus(object.getString("status"));
+                                transaksiModel.setStatus_bayar(object.getString("status_bayar"));
                                 transaksiModel.setStatus_migrasi(object.getString("status_migrasi"));
                                 transaksiModel.setQrcode(object.getString("qrcode"));
                                 transaksiModel.setKet(object.getString("ket"));
