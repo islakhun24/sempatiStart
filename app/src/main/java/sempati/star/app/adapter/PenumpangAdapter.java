@@ -151,9 +151,15 @@ public class PenumpangAdapter extends RecyclerView.Adapter<PenumpangAdapter.MyVi
             }
         });
 
-        etStatusPay.setOnClickListener(x -> {
-            statusBayar(etStatusPay, listPosition, sharedPrefManager);
-        });
+        if(sharedPrefManager.getUser().getStatusUser() == 0) {
+            statusBayar = "1";
+            ubahStatusBayar(sharedPrefManager, String.valueOf(pembayranDetails.get(listPosition).getId()), "1");
+            etStatusPay.setText("Lunas");
+        }else {
+            etStatusPay.setOnClickListener(x -> {
+                statusBayar(etStatusPay, listPosition, sharedPrefManager);
+            });
+        }
 
     }
 
