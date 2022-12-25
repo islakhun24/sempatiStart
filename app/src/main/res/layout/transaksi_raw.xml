@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginBottom="8dp"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:background="@drawable/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvKelas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="PATAS VIP"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvKelas"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
+            android:text="MEDAN - B. ACEH PATAS VIP"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="16dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tvDari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNama"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="Palembang" />
+
+        <TextView
+            android:id="@+id/tvDari2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDari"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="2dp"
+            android:text="PLM"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvKe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNama"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:text="Medan" />
+
+        <TextView
+            android:id="@+id/tvKe2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDari"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="2dp"
+            android:text="MDN"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imgBus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_directions_bus_24"
+            android:layout_toRightOf="@id/tvDari2"
+            android:layout_below="@id/tvDari"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="#f1c40f"
+            android:layout_toRightOf="@id/imgBus"
+            android:layout_below="@id/tvDari"
+            android:layout_marginTop="12sp"
+            android:layout_toLeftOf="@id/tvKe2"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:id="@+id/tvSisaKursi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDari2"
+            android:layout_alignParentLeft="true"
+            android:text="Sisa 40 kursi" />
+
+        <TextView
+            android:id="@+id/tvJam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSisaKursi"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="08:00 WIB"
+            android:textColor="#000"
+            android:textSize="16dp" />
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvSisaKursi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp. 300,000,-"
+                android:id="@+id/tvHarga"
+                android:textSize="16dp"
+                android:textColor="#1abc9c"/>
+            <ImageView
+                android:id="@+id/imgNaik"
+                android:layout_width="wrap_content"
+                android:tint="@color/colorRed"
+                android:src="@drawable/ic_baseline_arrow_upward_24"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_marginTop="-2dp"
+        android:elevation="2dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/dash"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btnDetail"
+        android:layout_marginTop="-3dp"
+        android:background="@drawable/card2"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="#f1c40f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DETAIL"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:layout_marginLeft="8dp"
+            app:tint="#f1c40f" />
+    </LinearLayout>
+</LinearLayout>

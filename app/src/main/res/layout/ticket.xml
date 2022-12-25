@@ -1,0 +1,285 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.cardview.widget.CardView
+        android:elevation="2dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/printView"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/keberangkatanTujuan"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Medan - Banda aceh"
+                android:textAlignment="center"
+                android:gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/tanggalKeberangkatan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rabu, 28 Oktober 2021 16:00 WIB"
+                android:textAlignment="center"
+                android:gravity="center_horizontal" />
+            <RelativeLayout
+                android:paddingTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv1"
+                    android:text="Kelas Bus"/>
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:text="PATAS VIP"
+                    android:layout_below="@+id/tv1"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvBussClass"/>
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/tvBussClass"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv3"
+                    android:text="Nama Penumpang"/>
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:text="Kiki Adtmaja"
+                    android:layout_below="@+id/tv3"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvPenumpang"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv2"
+                    android:text="Nomor Kursi"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:text="1A"
+                    android:layout_below="@+id/tv2"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvNomorKursi"/>
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/tvNomorKursi"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv4"
+                    android:text="Tanggal Transaksi"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:text="Senin, 25 oktober 2021"
+                    android:layout_below="@+id/tv4"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvTanggal"/>
+                <View
+                    android:id="@+id/v1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tvTanggal"
+                    android:layout_marginTop="16sp"
+                    android:layout_marginBottom="16sp"
+                    android:background="#e1e1e1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/v1"
+                    android:layout_alignParentRight="true"
+                    android:text="Lunas"
+                    android:id="@+id/kodeTransaksi"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/noTiket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/v1"
+                    android:layout_alignParentLeft="true"
+                    android:text="20001216"
+                    android:textSize="16sp"
+                    android:textColor="#000"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/kodeTransaksi"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv5"
+                    android:text="Nama Loket"/>
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:text="Kantor"
+                    android:layout_below="@+id/tv5"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvAgen"/>
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/kodeTransaksi"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv6"
+                    android:text="Keterangan Pembayaran"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:text="transit [BL 7744AA]"
+                    android:layout_below="@+id/tv6"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvMetode"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Harga"
+                android:textAlignment="center"
+                android:layout_marginTop="16sp"
+                android:gravity="center_horizontal" />
+            <TextView
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:id="@+id/tvHarga"
+                android:layout_height="wrap_content"
+                android:text="Rp. 280,000,-"
+                android:textAlignment="center"
+                android:gravity="center_horizontal" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tvTanggal"
+                android:layout_marginTop="16sp"
+                android:layout_marginBottom="16sp"
+                android:background="#e1e1e1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perhatian: "
+                android:textColor="#000"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Lapor tiket maksimal 15 menit sebelum keberangkatan "/>
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. Dilarang membawa sajam dan segala jenis narkotika "/>
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. Barang-barang bawaan menjadi tanggung jawab penumpang "/>
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. Barang bawaan yang melebihi kapasitas barang dikenakan tarif bagasi "/>
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5. Tukarkan tiket untuk makan "/>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_content_cut_24"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/dash"/>
+
+
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/logo"
+                android:textAlignment="center"
+                android:gravity="center_horizontal" />
+
+            <ImageView
+                android:id="@+id/qr"
+                android:src="@color/background"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"/>
+            <TextView
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4sp"
+                android:text="200012216"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:id="@+id/qrCode"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+            <TextView
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2sp"
+                android:text="Kupon untuk gratis makan"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

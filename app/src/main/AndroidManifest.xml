@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="sempati.star.app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logosempatistart"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logosempatistart"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SempatiStar"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".activity.LaporanManifestDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.LaporanTransaksiDetailActivity"
+            android:exported="false" />
+        <activity android:name=".activity.AktivasiAct" />
+        <activity android:name=".activity.TicketDoneAct" />
+        <activity android:name=".activity.PembayaranAct" />
+        <activity android:name=".activity.LoginAct" />
+        <activity android:name=".activity.SeatAct" />
+        <activity android:name=".activity.TiketResultAct" />
+        <activity android:name=".activity.HomeAct" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/noAction">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

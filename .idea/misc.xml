@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/drawable/ic_baseline_content_cut_24.xml" value="0.1085" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.1085" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/drawable/ic_baseline_directions_bus_24.xml" value="0.1085" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/drawable/ic_baseline_file_copy_24.xml" value="0.1085" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/drawable/ic_baseline_list_alt_24.xml" value="0.1085" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_home.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_laporan_manifest_detail.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_laporan_transaksi_detail.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_pembayaran.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_seat.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_ticket_done.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/activity_tiket_result.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/dialog_searchable_spinner.xml" value="0.2" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_booking.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_laporan_manifest.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_laporan_transaksi.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_manifest.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_report.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_tiket.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/fragment_transaksi.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/item_layout.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/row_search_tiket.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/layout/transaksi_raw.xml" value="0.22826086956521738" />
+        <entry key="..\:/bisnis_pribadi/sempatiStart/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
